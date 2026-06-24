@@ -13,7 +13,7 @@
     --border: #252525; --border2: #303030;
     --text: #F0EDE6; --text2: #9A9189; --text3: #5C5851;
   }
-  html, body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Georgia', 'Times New Roman', serif; }
+  html, body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Georgia', serif; }
   .page { max-width: 720px; margin: 0 auto; padding: 0 0 80px; }
 
   .site-header { padding: 40px 32px 28px; border-bottom: 1px solid var(--border); }
@@ -24,14 +24,20 @@
 
   .form-section { padding: 28px 32px 0; }
   .field-label { display: block; font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
-  .field-label-sub { display: block; font-size: 11px; color: var(--text3); letter-spacing: 1px; margin-bottom: 10px; font-style: italic; font-family: Georgia, serif; }
+  .field-label-sub { display: block; font-size: 11px; color: var(--text3); letter-spacing: 1px; margin-bottom: 10px; font-style: italic; }
 
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
   @media(max-width:520px){ .two-col { grid-template-columns: 1fr; } }
 
-  .text-input { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 11px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
-  .text-input:focus { border-color: var(--gold-dim); }
-  .text-input::placeholder { color: var(--text3); }
+  /* Select dropdown */
+  .select-wrap { position: relative; }
+  .select-wrap i { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 16px; pointer-events: none; }
+  .styled-select { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 11px 36px 11px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; appearance: none; cursor: pointer; transition: border-color .2s; }
+  .styled-select:focus { border-color: var(--gold-dim); }
+  .styled-select option { background: var(--bg2); color: var(--text); }
+  .other-input { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 11px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; margin-top: 8px; display: none; }
+  .other-input:focus { border-color: var(--gold-dim); }
+  .other-input::placeholder { color: var(--text3); }
 
   .taste-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
   .taste-btn { background: transparent; border: 1px solid var(--border2); border-radius: 2px; padding: 7px 16px; color: var(--text2); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: all .2s; }
@@ -46,10 +52,11 @@
   .spirit-icon { display: block; font-size: 22px; color: var(--text2); margin-bottom: 6px; }
   .spirit-btn.active .spirit-icon { color: var(--gold); }
   .spirit-name-en { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text2); display: block; }
-  .spirit-name-zh { font-size: 11px; color: var(--text3); display: block; margin-top: 2px; letter-spacing: 1px; }
+  .spirit-name-zh { font-size: 11px; color: var(--text3); display: block; margin-top: 2px; }
   .spirit-btn.active .spirit-name-en { color: var(--gold); }
   .spirit-btn.active .spirit-name-zh { color: var(--gold-dim); }
 
+  /* Upload */
   .upload-area { margin-bottom: 28px; }
   .upload-box { border: 1px dashed var(--border2); border-radius: 4px; padding: 20px; text-align: center; cursor: pointer; transition: all .2s; position: relative; background: var(--bg2); }
   .upload-box:hover { border-color: var(--gold-dim); }
@@ -59,14 +66,14 @@
   .upload-text { font-size: 12px; color: var(--text3); letter-spacing: 1px; }
   .upload-hint { font-size: 11px; color: var(--text3); margin-top: 4px; font-style: italic; }
   .preview-wrap { margin-top: 12px; position: relative; display: none; }
-  .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border2); }
+  .preview-img-el { width: 100%; max-height: 200px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border2); }
   .remove-btn { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); border: 1px solid var(--border2); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: var(--text2); cursor: pointer; font-size: 14px; transition: all .2s; }
   .remove-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
   .upload-tag { display: inline-block; margin-top: 8px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--gold-dim); border-radius: 2px; padding: 3px 10px; }
 
   .cta-btn { width: 100%; background: var(--gold); border: none; color: #0C0C0C; padding: 16px; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; border-radius: 2px; margin-bottom: 28px; transition: background .2s; }
   .cta-btn:hover { background: #D4B05E; }
-  .cta-btn:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; letter-spacing: 3px; }
+  .cta-btn:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; }
 
   .section-divider { border: none; border-top: 1px solid var(--border); margin: 0 0 24px; }
 
@@ -78,13 +85,13 @@
   @keyframes pulse { 0%,80%,100%{ opacity:.2; transform:scale(.8); } 40%{ opacity:1; transform:scale(1); } }
   .loading-text { font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
 
+  /* Result cards */
   .result-area { display: none; }
   .result-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
-
   .drink-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 6px; overflow: hidden; margin-bottom: 20px; transition: border-color .3s; }
   .drink-card:hover { border-color: var(--gold-dim); }
   .drink-photo { width: 100%; height: 220px; object-fit: cover; display: block; background: var(--bg3); }
-  .drink-photo-placeholder { width: 100%; height: 220px; background: var(--bg3); display: flex; align-items: center; justify-content: center; }
+  .drink-photo-placeholder { width: 100%; height: 220px; background: var(--bg3); display: none; align-items: center; justify-content: center; }
   .drink-photo-placeholder i { font-size: 32px; color: var(--text3); }
   .drink-body { padding: 22px 24px; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
@@ -102,8 +109,23 @@
   .photo-credit a { color: var(--text3); text-decoration: none; }
   .photo-credit a:hover { color: var(--gold); }
 
-  .error-box { background: rgba(163,45,45,0.12); border: 1px solid rgba(163,45,45,0.4); border-radius: 4px; padding: 16px 20px; font-size: 13px; color: #F09595; line-height: 1.6; }
+  /* Chat */
+  .chat-section { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px; display: none; }
+  .chat-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+  .chat-messages { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; min-height: 60px; }
+  .chat-msg { max-width: 85%; padding: 12px 16px; border-radius: 4px; font-size: 14px; line-height: 1.65; }
+  .chat-msg.user { align-self: flex-end; background: var(--gold-glow); border: 1px solid var(--gold-dim); color: var(--text); border-radius: 4px; }
+  .chat-msg.ai { align-self: flex-start; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
+  .chat-msg.ai.loading { color: var(--text3); font-style: italic; }
+  .chat-input-row { display: flex; gap: 10px; }
+  .chat-input { flex: 1; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 11px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
+  .chat-input:focus { border-color: var(--gold-dim); }
+  .chat-input::placeholder { color: var(--text3); }
+  .chat-send { background: transparent; border: 1px solid var(--gold-dim); border-radius: 3px; padding: 11px 18px; color: var(--gold); font-size: 13px; cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap; }
+  .chat-send:hover { background: var(--gold-glow); }
+  .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
 
+  .error-box { background: rgba(163,45,45,0.12); border: 1px solid rgba(163,45,45,0.4); border-radius: 4px; padding: 16px 20px; font-size: 13px; color: #F09595; line-height: 1.6; }
   .site-footer { padding: 32px 32px 0; border-top: 1px solid var(--border); margin-top: 32px; font-size: 11px; color: var(--text3); letter-spacing: 1px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 </style>
 </head>
@@ -118,14 +140,41 @@
   </header>
 
   <main class="form-section">
+
     <div class="two-col">
       <div>
-        <label class="field-label" for="mood">今晚心情 / Tonight's mood</label>
-        <input class="text-input" id="mood" type="text" placeholder="放鬆、慶祝、失落...">
+        <label class="field-label" for="mood-select">今晚心情 / Tonight's mood</label>
+        <div class="select-wrap">
+          <select class="styled-select" id="mood-select">
+            <option value="">請選擇心情...</option>
+            <option value="放鬆，想靜靜地喝一杯">放鬆</option>
+            <option value="興奮慶祝，值得好好犒賞自己">興奮慶祝</option>
+            <option value="微醺小酌，不想喝太多">微醺小酌</option>
+            <option value="壓力很大，需要一杯讓自己喘口氣">壓力很大</option>
+            <option value="失落低落，需要一點溫暖">失落低落</option>
+            <option value="浪漫的夜晚，想製造氣氛">浪漫氣氛</option>
+            <option value="其他">其他（自填）</option>
+          </select>
+          <i class="ti ti-chevron-down" aria-hidden="true"></i>
+        </div>
+        <input class="other-input" id="mood-other" type="text" placeholder="描述你的心情...">
       </div>
       <div>
-        <label class="field-label" for="occasion">場合 / Occasion</label>
-        <input class="text-input" id="occasion" type="text" placeholder="獨飲、約會、朋友聚...">
+        <label class="field-label" for="occasion-select">場合 / Occasion</label>
+        <div class="select-wrap">
+          <select class="styled-select" id="occasion-select">
+            <option value="">請選擇場合...</option>
+            <option value="一個人在家獨飲">一個人在家</option>
+            <option value="在酒吧現場點酒">酒吧現場</option>
+            <option value="餐廳晚餐配酒">餐廳晚餐</option>
+            <option value="朋友派對聚會">朋友派對</option>
+            <option value="下班後放鬆小酌">下班後</option>
+            <option value="特殊紀念日，想要難忘的一杯">特殊紀念日</option>
+            <option value="其他">其他（自填）</option>
+          </select>
+          <i class="ti ti-chevron-down" aria-hidden="true"></i>
+        </div>
+        <input class="other-input" id="occasion-other" type="text" placeholder="描述你的場合...">
       </div>
     </div>
 
@@ -142,22 +191,22 @@
 
     <label class="field-label">酒類偏好 / Spirit category</label>
     <div class="spirit-grid" id="spirit-grid">
-      <button class="spirit-btn" data-v="Whisky / Bourbon">
+      <button class="spirit-btn" data-v="whisky" data-label="威士忌純飲或 on the rocks，不要調成雞尾酒">
         <span class="spirit-icon"><i class="ti ti-glass-full" aria-hidden="true"></i></span>
         <span class="spirit-name-en">Whisky</span>
         <span class="spirit-name-zh">威士忌</span>
       </button>
-      <button class="spirit-btn" data-v="Cocktail">
+      <button class="spirit-btn" data-v="cocktail" data-label="雞尾酒或調酒">
         <span class="spirit-icon"><i class="ti ti-glass-cocktail" aria-hidden="true"></i></span>
         <span class="spirit-name-en">Cocktail</span>
         <span class="spirit-name-zh">雞尾酒</span>
       </button>
-      <button class="spirit-btn" data-v="Wine / Champagne">
+      <button class="spirit-btn" data-v="wine" data-label="葡萄酒、紅白酒或氣泡酒">
         <span class="spirit-icon"><i class="ti ti-wine" aria-hidden="true"></i></span>
         <span class="spirit-name-en">Wine</span>
         <span class="spirit-name-zh">葡萄酒</span>
       </button>
-      <button class="spirit-btn" data-v="Craft Beer">
+      <button class="spirit-btn" data-v="beer" data-label="精釀啤酒或生啤">
         <span class="spirit-icon"><i class="ti ti-beer" aria-hidden="true"></i></span>
         <span class="spirit-name-en">Beer</span>
         <span class="spirit-name-zh">精釀啤酒</span>
@@ -165,7 +214,7 @@
     </div>
 
     <div class="upload-area">
-      <label class="field-label">酒單照片 / Menu photo <span style="color:var(--text3);letter-spacing:1px;font-size:10px;text-transform:none;font-style:italic">（選填）</span></label>
+      <label class="field-label">酒單照片 / Menu photo <span style="color:var(--text3);font-size:10px;text-transform:none;font-style:italic;letter-spacing:1px">（選填）</span></label>
       <span class="field-label-sub">上傳酒吧菜單或特調照片，AI 會從中推薦最適合你的選項</span>
       <div class="upload-box" id="upload-box">
         <input type="file" id="menu-img" accept="image/*">
@@ -174,7 +223,7 @@
         <p class="upload-hint">支援 JPG、PNG、WEBP</p>
       </div>
       <div class="preview-wrap" id="preview-wrap">
-        <img class="preview-img" id="preview-img" src="" alt="酒單預覽">
+        <img class="preview-img-el" id="preview-img" src="" alt="酒單預覽">
         <button class="remove-btn" id="remove-btn" aria-label="移除圖片"><i class="ti ti-x" style="font-size:12px" aria-hidden="true"></i></button>
         <div style="text-align:center"><span class="upload-tag"><i class="ti ti-check" style="font-size:10px;margin-right:4px" aria-hidden="true"></i>圖片已上傳，AI 將分析酒單</span></div>
       </div>
@@ -194,16 +243,28 @@
       <p class="result-label">Tonight's recommendation</p>
       <div id="result-cards"></div>
     </div>
+
+    <!-- Chat -->
+    <div class="chat-section" id="chat-section">
+      <p class="chat-label"><i class="ti ti-message-2" style="font-size:13px;margin-right:6px;vertical-align:-1px" aria-hidden="true"></i>繼續問調酒師 / Ask the bartender</p>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" type="text" placeholder="例如：有沒有不那麼甜的替代方案？">
+        <button class="chat-send" id="chat-send">送出</button>
+      </div>
+    </div>
+
   </main>
 
   <footer class="site-footer">
     <span>The Sommelier &copy; 2026</span>
-    <span>Powered by Claude API &nbsp;·&nbsp; Photos via Unsplash</span>
+    <span>Powered by Claude API &nbsp;·&nbsp; Photos via Pexels</span>
   </footer>
 </div>
 
 <script>
   const WORKER_URL = 'https://bar.s151933220251.workers.dev';
+  const PEXELS_KEY = 'iOkKXjZihhHrWPtHXBm5FpSFYFuIYlpoN7OzvQU2MiD3BOr1TJDZfulq';
 
   const tasteWrap = document.getElementById('taste-wrap');
   const spiritGrid = document.getElementById('spirit-grid');
@@ -217,9 +278,34 @@
   const previewImg = document.getElementById('preview-img');
   const removeBtn = document.getElementById('remove-btn');
   const uploadBox = document.getElementById('upload-box');
+  const chatSection = document.getElementById('chat-section');
+  const chatMessages = document.getElementById('chat-messages');
+  const chatInput = document.getElementById('chat-input');
+  const chatSend = document.getElementById('chat-send');
+  const moodSelect = document.getElementById('mood-select');
+  const moodOther = document.getElementById('mood-other');
+  const occasionSelect = document.getElementById('occasion-select');
+  const occasionOther = document.getElementById('occasion-other');
 
   let uploadedImageBase64 = null;
   let uploadedImageType = null;
+  let chatHistory = [];
+  let lastRecommendation = '';
+
+  // Dropdowns with "other"
+  moodSelect.addEventListener('change', () => {
+    moodOther.style.display = moodSelect.value === '其他' ? 'block' : 'none';
+  });
+  occasionSelect.addEventListener('change', () => {
+    occasionOther.style.display = occasionSelect.value === '其他' ? 'block' : 'none';
+  });
+
+  function getMood() {
+    return moodSelect.value === '其他' ? (moodOther.value.trim() || '放鬆') : (moodSelect.value || '放鬆');
+  }
+  function getOccasion() {
+    return occasionSelect.value === '其他' ? (occasionOther.value.trim() || '獨飲') : (occasionSelect.value || '獨飲');
+  }
 
   tasteWrap.querySelectorAll('.taste-btn').forEach(b => {
     b.addEventListener('click', () => b.classList.toggle('active'));
@@ -255,29 +341,38 @@
     menuImg.value = '';
   });
 
-  async function fetchDrinkPhoto(query, photographerFallback) {
+  async function fetchPexelsPhoto(query) {
     try {
-      const url = `https://source.unsplash.com/featured/800x500/?${encodeURIComponent(query + ' cocktail drink bar')}`;
-      return { imgUrl: url, credit: null };
-    } catch {
-      return { imgUrl: null, credit: null };
-    }
+      const resp = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`, {
+        headers: { Authorization: PEXELS_KEY }
+      });
+      const data = await resp.json();
+      if (data.photos && data.photos.length > 0) {
+        const pick = data.photos[Math.floor(Math.random() * Math.min(3, data.photos.length))];
+        return { url: pick.src.large, photographer: pick.photographer, link: pick.url };
+      }
+    } catch {}
+    return null;
   }
 
   const loadingPhrases = [
     'Consulting the bartender...',
-    'Analysing the menu...',
+    'Checking the cellar...',
     'Selecting the perfect pour...',
     'Crafting your recommendation...'
   ];
 
   askBtn.addEventListener('click', async () => {
-    const mood = document.getElementById('mood').value.trim() || '放鬆';
-    const occasion = document.getElementById('occasion').value.trim() || '獨飲';
+    const mood = getMood();
+    const occasion = getOccasion();
     const tastes = [...tasteWrap.querySelectorAll('.taste-btn.active')].map(b => b.dataset.v).join(', ') || '任何口味';
-    const spirit = spiritGrid.querySelector('.spirit-btn.active')?.dataset.v || '任何';
+    const spiritBtn = spiritGrid.querySelector('.spirit-btn.active');
+    const spiritLabel = spiritBtn ? spiritBtn.dataset.label : '任何種類的酒';
 
     resultArea.style.display = 'none';
+    chatSection.style.display = 'none';
+    chatHistory = [];
+    chatMessages.innerHTML = '';
     loadingArea.style.display = 'block';
     askBtn.disabled = true;
     askBtn.textContent = 'Consulting...';
@@ -288,32 +383,28 @@
       loadingText.textContent = loadingPhrases[idx];
     }, 1800);
 
-    const textPrompt = uploadedImageBase64
-      ? `你是一位頂級酒吧的資深調酒師。我上傳了一張酒吧菜單或特調照片，請先閱讀圖片中的酒單內容，然後根據以下資訊從菜單中推薦 2 款最適合今晚的飲品。如果圖片中找不到足夠資訊，可以自由發揮推薦。
+    const systemPrompt = `你是一位頂級酒吧的資深調酒師，風格優雅、專業又親切。
+重要規則：
+- 選擇威士忌時，只推薦純飲、on the rocks 或加水，絕對不能推薦含有其他調料的雞尾酒
+- 選擇雞尾酒時，才推薦調製類的雞尾酒
+- 選擇葡萄酒時，只推薦紅酒、白酒或氣泡酒
+- 選擇啤酒時，只推薦精釀或生啤
+- 推薦要符合用戶的心情和場合`;
 
-心情: ${mood}
-場合: ${occasion}
-口味偏好: ${tastes}
-酒類偏好: ${spirit}`
-      : `你是一位頂級酒吧的資深調酒師，請根據以下資訊推薦 2 款最適合今晚的飲品。
+    const userPrompt = uploadedImageBase64
+      ? `我上傳了一張酒吧菜單或特調照片，請先閱讀圖片中的酒單，然後根據以下資訊推薦 2 款飲品：\n\n心情: ${mood}\n場合: ${occasion}\n口味偏好: ${tastes}\n酒類: ${spiritLabel}`
+      : `請根據以下資訊推薦 2 款最適合今晚的飲品：\n\n心情: ${mood}\n場合: ${occasion}\n口味偏好: ${tastes}\n酒類: ${spiritLabel}`;
 
-心情: ${mood}
-場合: ${occasion}
-口味偏好: ${tastes}
-酒類偏好: ${spirit}`;
+    const fullPrompt = userPrompt + `\n\n請以 JSON array 格式回覆，每個物件包含：
+- name_zh: 中文名稱
+- name_en: 英文名稱（精準，例如 "Macallan 12" 或 "Negroni"）
+- photo_query: 搜尋照片用的英文關鍵字 3～4 個詞，描述這杯酒的外觀，例如 "whisky glass amber ice rocks" 或 "red negroni cocktail orange"
+- abv: 酒精濃度（格式 "ABV 40%"）
+- flavor_zh: 風味描述 2～3 句，繁體中文
+- recipe: 陣列，格式 "食材|份量"
+- why_zh: 一句話說明為何今晚適合，語氣像老朋友
 
-    const fullPrompt = textPrompt + `
-
-請以 JSON array 格式回覆，每個物件包含以下欄位：
-- name_zh: 飲品中文名稱
-- name_en: 英文名稱（用於搜尋圖片，請給出精準的英文名，例如 "Old Fashioned" 或 "Negroni"）
-- photo_query: 用於搜尋照片的英文關鍵字，2～3 個詞，描述這杯酒的外觀顏色或特色，例如 "amber whisky glass ice" 或 "red negroni orange peel"
-- abv: 酒精濃度（格式如 "ABV 40%" 或 "ABV 5%"）
-- flavor_zh: 風味描述，繁體中文，2～3 句話，描述香氣、口感、餘韻
-- recipe: 陣列，每項格式為 "食材名稱|份量"（例如 "Scotch Whisky|45ml"）
-- why_zh: 一句話說明為什麼今晚適合喝這杯，語氣像老朋友在建議你
-
-只回覆 JSON array，不要其他說明文字，不要 markdown 標記。`;
+只回覆 JSON array，不要 markdown。`;
 
     const messageContent = uploadedImageBase64
       ? [
@@ -326,7 +417,10 @@
       const resp = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [{ role: 'user', content: messageContent }] })
+        body: JSON.stringify({
+          system: systemPrompt,
+          messages: [{ role: 'user', content: messageContent }]
+        })
       });
 
       clearInterval(timer);
@@ -341,26 +435,35 @@
       raw = raw.replace(/```json|```/g, '').trim();
       const drinks = JSON.parse(raw);
 
+      lastRecommendation = drinks.map(d => `${d.name_zh} (${d.name_en}): ${d.flavor_zh}`).join('\n');
+      chatHistory = [
+        { role: 'user', content: fullPrompt },
+        { role: 'assistant', content: raw }
+      ];
+
       resultCards.innerHTML = '';
 
       for (const d of drinks) {
         const card = document.createElement('div');
         card.className = 'drink-card';
 
-        const photoQuery = encodeURIComponent((d.photo_query || d.name_en || 'cocktail') + ' drink bar');
-        const photoUrl = `https://source.unsplash.com/featured/800x500/?${photoQuery}&t=${Date.now()}${Math.random()}`;
+        const photoData = await fetchPexelsPhoto(d.photo_query || d.name_en + ' cocktail drink');
 
         const recipeHTML = (d.recipe || []).map(r => {
           const parts = r.split('|');
           return `<li><span>${parts[0]}</span><span class="recipe-amt">${parts[1] || ''}</span></li>`;
         }).join('');
 
+        const photoHTML = photoData
+          ? `<img class="drink-photo" src="${photoData.url}" alt="${d.name_en}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+          : '';
+        const placeholderHTML = `<div class="drink-photo-placeholder" style="display:${photoData ? 'none' : 'flex'}"><i class="ti ti-glass-cocktail" aria-hidden="true"></i></div>`;
+        const creditHTML = photoData
+          ? `<p class="photo-credit">Photo by <a href="${photoData.link}" target="_blank" rel="noopener">${photoData.photographer}</a> via <a href="https://pexels.com" target="_blank" rel="noopener">Pexels</a></p>`
+          : '';
+
         card.innerHTML = `
-          <img class="drink-photo" src="${photoUrl}" alt="${d.name_en}" loading="lazy"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="drink-photo-placeholder" style="display:none">
-            <i class="ti ti-glass-cocktail" aria-hidden="true"></i>
-          </div>
+          ${photoHTML}${placeholderHTML}
           <div class="drink-body">
             <div class="card-top">
               <div>
@@ -373,22 +476,74 @@
             <p class="why-text">${d.why_zh}</p>
             <p class="recipe-label">Recipe</p>
             <ul class="recipe-list">${recipeHTML}</ul>
-            <p class="photo-credit">Photo via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></p>
+            ${creditHTML}
           </div>
         `;
         resultCards.appendChild(card);
       }
 
       resultArea.style.display = 'block';
+      chatSection.style.display = 'block';
 
     } catch (e) {
       clearInterval(timer);
       loadingArea.style.display = 'none';
       askBtn.disabled = false;
       askBtn.textContent = 'Ask the Bartender';
-      resultCards.innerHTML = `<div class="error-box">發生錯誤：${e.message}<br><br>請確認 Worker 網址設定正確。</div>`;
+      resultCards.innerHTML = `<div class="error-box">發生錯誤：${e.message}</div>`;
       resultArea.style.display = 'block';
     }
+  });
+
+  async function sendChat() {
+    const msg = chatInput.value.trim();
+    if (!msg || chatSend.disabled) return;
+
+    const userBubble = document.createElement('div');
+    userBubble.className = 'chat-msg user';
+    userBubble.textContent = msg;
+    chatMessages.appendChild(userBubble);
+
+    const loadBubble = document.createElement('div');
+    loadBubble.className = 'chat-msg ai loading';
+    loadBubble.textContent = '調酒師正在思考...';
+    chatMessages.appendChild(loadBubble);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    chatInput.value = '';
+    chatSend.disabled = true;
+
+    chatHistory.push({ role: 'user', content: msg });
+
+    try {
+      const resp = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          system: '你是一位頂級酒吧的資深調酒師，風格優雅親切。根據之前的推薦內容回答用戶的追問，用繁體中文回答，語氣像老朋友在聊天。',
+          messages: chatHistory
+        })
+      });
+
+      const data = await resp.json();
+      const reply = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
+      chatHistory.push({ role: 'assistant', content: reply });
+
+      loadBubble.className = 'chat-msg ai';
+      loadBubble.textContent = reply;
+
+    } catch (e) {
+      loadBubble.className = 'chat-msg ai';
+      loadBubble.textContent = '抱歉，暫時無法回應，請稍後再試。';
+    }
+
+    chatSend.disabled = false;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  chatSend.addEventListener('click', sendChat);
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
   });
 </script>
 </body>
