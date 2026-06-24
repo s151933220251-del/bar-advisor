@@ -15,22 +15,29 @@
   }
   html, body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Georgia', 'Times New Roman', serif; }
   .page { max-width: 720px; margin: 0 auto; padding: 0 0 80px; }
+
   .site-header { padding: 40px 32px 28px; border-bottom: 1px solid var(--border); }
   .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
   .logo-ring { width: 34px; height: 34px; border: 1.5px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
   .site-name { font-size: 22px; font-weight: 400; color: var(--text); letter-spacing: 2px; font-style: italic; }
   .site-sub { font-size: 11px; letter-spacing: 3px; color: var(--text2); text-transform: uppercase; margin-left: 46px; }
+
   .form-section { padding: 28px 32px 0; }
   .field-label { display: block; font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .field-label-sub { display: block; font-size: 11px; color: var(--text3); letter-spacing: 1px; margin-bottom: 10px; font-style: italic; font-family: Georgia, serif; }
+
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
   @media(max-width:520px){ .two-col { grid-template-columns: 1fr; } }
+
   .text-input { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 11px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
   .text-input:focus { border-color: var(--gold-dim); }
   .text-input::placeholder { color: var(--text3); }
+
   .taste-wrap { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
   .taste-btn { background: transparent; border: 1px solid var(--border2); border-radius: 2px; padding: 7px 16px; color: var(--text2); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: all .2s; }
   .taste-btn:hover { border-color: var(--gold-dim); color: var(--text); }
   .taste-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-glow); }
+
   .spirit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 28px; }
   @media(max-width:400px){ .spirit-grid { grid-template-columns: repeat(2,1fr); } }
   .spirit-btn { background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; padding: 16px 8px; cursor: pointer; text-align: center; transition: all .2s; font-family: inherit; }
@@ -38,12 +45,31 @@
   .spirit-btn.active { border-color: var(--gold); background: var(--gold-glow); }
   .spirit-icon { display: block; font-size: 22px; color: var(--text2); margin-bottom: 6px; }
   .spirit-btn.active .spirit-icon { color: var(--gold); }
-  .spirit-name { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text2); }
-  .spirit-btn.active .spirit-name { color: var(--gold); }
+  .spirit-name-en { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text2); display: block; }
+  .spirit-name-zh { font-size: 11px; color: var(--text3); display: block; margin-top: 2px; letter-spacing: 1px; }
+  .spirit-btn.active .spirit-name-en { color: var(--gold); }
+  .spirit-btn.active .spirit-name-zh { color: var(--gold-dim); }
+
+  .upload-area { margin-bottom: 28px; }
+  .upload-box { border: 1px dashed var(--border2); border-radius: 4px; padding: 20px; text-align: center; cursor: pointer; transition: all .2s; position: relative; background: var(--bg2); }
+  .upload-box:hover { border-color: var(--gold-dim); }
+  .upload-box.has-image { border-color: var(--gold-dim); border-style: solid; }
+  .upload-box input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+  .upload-icon { font-size: 24px; color: var(--text3); display: block; margin-bottom: 8px; }
+  .upload-text { font-size: 12px; color: var(--text3); letter-spacing: 1px; }
+  .upload-hint { font-size: 11px; color: var(--text3); margin-top: 4px; font-style: italic; }
+  .preview-wrap { margin-top: 12px; position: relative; display: none; }
+  .preview-img { width: 100%; max-height: 200px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border2); }
+  .remove-btn { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); border: 1px solid var(--border2); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: var(--text2); cursor: pointer; font-size: 14px; transition: all .2s; }
+  .remove-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
+  .upload-tag { display: inline-block; margin-top: 8px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--gold-dim); border-radius: 2px; padding: 3px 10px; }
+
   .cta-btn { width: 100%; background: var(--gold); border: none; color: #0C0C0C; padding: 16px; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; border-radius: 2px; margin-bottom: 28px; transition: background .2s; }
   .cta-btn:hover { background: #D4B05E; }
   .cta-btn:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; letter-spacing: 3px; }
+
   .section-divider { border: none; border-top: 1px solid var(--border); margin: 0 0 24px; }
+
   .loading-area { text-align: center; padding: 40px 0; display: none; }
   .loading-dot-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 1.4s ease-in-out infinite; }
@@ -51,10 +77,16 @@
   .dot:nth-child(3){ animation-delay: .4s; }
   @keyframes pulse { 0%,80%,100%{ opacity:.2; transform:scale(.8); } 40%{ opacity:1; transform:scale(1); } }
   .loading-text { font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
+
   .result-area { display: none; }
   .result-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
-  .drink-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 6px; padding: 22px 24px; margin-bottom: 14px; transition: border-color .3s; }
+
+  .drink-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 6px; overflow: hidden; margin-bottom: 20px; transition: border-color .3s; }
   .drink-card:hover { border-color: var(--gold-dim); }
+  .drink-photo { width: 100%; height: 220px; object-fit: cover; display: block; background: var(--bg3); }
+  .drink-photo-placeholder { width: 100%; height: 220px; background: var(--bg3); display: flex; align-items: center; justify-content: center; }
+  .drink-photo-placeholder i { font-size: 32px; color: var(--text3); }
+  .drink-body { padding: 22px 24px; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .drink-name-zh { font-size: 20px; color: var(--text); font-style: italic; font-weight: 400; }
   .drink-name-en { font-size: 12px; color: var(--text2); letter-spacing: 1.5px; margin-top: 3px; text-transform: uppercase; }
@@ -66,7 +98,12 @@
   .recipe-list li { display: flex; justify-content: space-between; font-size: 13px; color: var(--text2); padding: 6px 0; border-bottom: 1px solid var(--border); }
   .recipe-list li:last-child { border: none; }
   .recipe-amt { color: var(--gold); }
+  .photo-credit { font-size: 10px; color: var(--text3); letter-spacing: 1px; margin-top: 12px; font-style: italic; }
+  .photo-credit a { color: var(--text3); text-decoration: none; }
+  .photo-credit a:hover { color: var(--gold); }
+
   .error-box { background: rgba(163,45,45,0.12); border: 1px solid rgba(163,45,45,0.4); border-radius: 4px; padding: 16px 20px; font-size: 13px; color: #F09595; line-height: 1.6; }
+
   .site-footer { padding: 32px 32px 0; border-top: 1px solid var(--border); margin-top: 32px; font-size: 11px; color: var(--text3); letter-spacing: 1px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 </style>
 </head>
@@ -79,6 +116,7 @@
     </div>
     <p class="site-sub">AI 調酒顧問 &nbsp;·&nbsp; Your personal bartender, powered by Claude</p>
   </header>
+
   <main class="form-section">
     <div class="two-col">
       <div>
@@ -90,6 +128,7 @@
         <input class="text-input" id="occasion" type="text" placeholder="獨飲、約會、朋友聚...">
       </div>
     </div>
+
     <label class="field-label">口味偏好 / Taste preference</label>
     <div class="taste-wrap" id="taste-wrap">
       <button class="taste-btn" data-v="甜 Sweet">甜 Sweet</button>
@@ -100,46 +139,71 @@
       <button class="taste-btn" data-v="煙燻 Smoky">煙燻 Smoky</button>
       <button class="taste-btn" data-v="花果 Fruity">花果 Fruity</button>
     </div>
+
     <label class="field-label">酒類偏好 / Spirit category</label>
     <div class="spirit-grid" id="spirit-grid">
       <button class="spirit-btn" data-v="Whisky / Bourbon">
         <span class="spirit-icon"><i class="ti ti-glass-full" aria-hidden="true"></i></span>
-        <span class="spirit-name">Whisky</span>
+        <span class="spirit-name-en">Whisky</span>
+        <span class="spirit-name-zh">威士忌</span>
       </button>
       <button class="spirit-btn" data-v="Cocktail">
         <span class="spirit-icon"><i class="ti ti-glass-cocktail" aria-hidden="true"></i></span>
-        <span class="spirit-name">Cocktail</span>
+        <span class="spirit-name-en">Cocktail</span>
+        <span class="spirit-name-zh">雞尾酒</span>
       </button>
       <button class="spirit-btn" data-v="Wine / Champagne">
         <span class="spirit-icon"><i class="ti ti-wine" aria-hidden="true"></i></span>
-        <span class="spirit-name">Wine</span>
+        <span class="spirit-name-en">Wine</span>
+        <span class="spirit-name-zh">葡萄酒</span>
       </button>
       <button class="spirit-btn" data-v="Craft Beer">
         <span class="spirit-icon"><i class="ti ti-beer" aria-hidden="true"></i></span>
-        <span class="spirit-name">Beer</span>
+        <span class="spirit-name-en">Beer</span>
+        <span class="spirit-name-zh">精釀啤酒</span>
       </button>
     </div>
+
+    <div class="upload-area">
+      <label class="field-label">酒單照片 / Menu photo <span style="color:var(--text3);letter-spacing:1px;font-size:10px;text-transform:none;font-style:italic">（選填）</span></label>
+      <span class="field-label-sub">上傳酒吧菜單或特調照片，AI 會從中推薦最適合你的選項</span>
+      <div class="upload-box" id="upload-box">
+        <input type="file" id="menu-img" accept="image/*">
+        <i class="ti ti-camera upload-icon" aria-hidden="true"></i>
+        <p class="upload-text">點擊或拖曳圖片至此</p>
+        <p class="upload-hint">支援 JPG、PNG、WEBP</p>
+      </div>
+      <div class="preview-wrap" id="preview-wrap">
+        <img class="preview-img" id="preview-img" src="" alt="酒單預覽">
+        <button class="remove-btn" id="remove-btn" aria-label="移除圖片"><i class="ti ti-x" style="font-size:12px" aria-hidden="true"></i></button>
+        <div style="text-align:center"><span class="upload-tag"><i class="ti ti-check" style="font-size:10px;margin-right:4px" aria-hidden="true"></i>圖片已上傳，AI 將分析酒單</span></div>
+      </div>
+    </div>
+
     <button class="cta-btn" id="ask-btn">Ask the Bartender</button>
     <hr class="section-divider">
+
     <div class="loading-area" id="loading-area">
       <div class="loading-dot-row">
         <div class="dot"></div><div class="dot"></div><div class="dot"></div>
       </div>
       <p class="loading-text" id="loading-text">Consulting the bartender...</p>
     </div>
+
     <div class="result-area" id="result-area">
       <p class="result-label">Tonight's recommendation</p>
       <div id="result-cards"></div>
     </div>
   </main>
+
   <footer class="site-footer">
     <span>The Sommelier &copy; 2026</span>
-    <span>Powered by Claude API &nbsp;·&nbsp; Built with GitHub Pages</span>
+    <span>Powered by Claude API &nbsp;·&nbsp; Photos via Unsplash</span>
   </footer>
 </div>
+
 <script>
-  // ★ 把這裡換成你的 Cloudflare Worker 網址 ★
-  const WORKER_URL = 'https://bar.s151933220251.workers.dev/';
+  const WORKER_URL = 'https://bar.s151933220251.workers.dev';
 
   const tasteWrap = document.getElementById('taste-wrap');
   const spiritGrid = document.getElementById('spirit-grid');
@@ -148,6 +212,14 @@
   const loadingText = document.getElementById('loading-text');
   const resultArea = document.getElementById('result-area');
   const resultCards = document.getElementById('result-cards');
+  const menuImg = document.getElementById('menu-img');
+  const previewWrap = document.getElementById('preview-wrap');
+  const previewImg = document.getElementById('preview-img');
+  const removeBtn = document.getElementById('remove-btn');
+  const uploadBox = document.getElementById('upload-box');
+
+  let uploadedImageBase64 = null;
+  let uploadedImageType = null;
 
   tasteWrap.querySelectorAll('.taste-btn').forEach(b => {
     b.addEventListener('click', () => b.classList.toggle('active'));
@@ -159,9 +231,42 @@
     });
   });
 
+  menuImg.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const result = ev.target.result;
+      uploadedImageBase64 = result.split(',')[1];
+      uploadedImageType = file.type;
+      previewImg.src = result;
+      previewWrap.style.display = 'block';
+      uploadBox.classList.add('has-image');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  removeBtn.addEventListener('click', () => {
+    uploadedImageBase64 = null;
+    uploadedImageType = null;
+    previewImg.src = '';
+    previewWrap.style.display = 'none';
+    uploadBox.classList.remove('has-image');
+    menuImg.value = '';
+  });
+
+  async function fetchDrinkPhoto(query, photographerFallback) {
+    try {
+      const url = `https://source.unsplash.com/featured/800x500/?${encodeURIComponent(query + ' cocktail drink bar')}`;
+      return { imgUrl: url, credit: null };
+    } catch {
+      return { imgUrl: null, credit: null };
+    }
+  }
+
   const loadingPhrases = [
     'Consulting the bartender...',
-    'Checking the cellar...',
+    'Analysing the menu...',
     'Selecting the perfect pour...',
     'Crafting your recommendation...'
   ];
@@ -183,16 +288,26 @@
       loadingText.textContent = loadingPhrases[idx];
     }, 1800);
 
-    const prompt = `你是一位頂級酒吧的資深調酒師，請根據以下資訊推薦 2 款最適合今晚的飲品。
+    const textPrompt = uploadedImageBase64
+      ? `你是一位頂級酒吧的資深調酒師。我上傳了一張酒吧菜單或特調照片，請先閱讀圖片中的酒單內容，然後根據以下資訊從菜單中推薦 2 款最適合今晚的飲品。如果圖片中找不到足夠資訊，可以自由發揮推薦。
 
 心情: ${mood}
 場合: ${occasion}
 口味偏好: ${tastes}
-酒類偏好: ${spirit}
+酒類偏好: ${spirit}`
+      : `你是一位頂級酒吧的資深調酒師，請根據以下資訊推薦 2 款最適合今晚的飲品。
+
+心情: ${mood}
+場合: ${occasion}
+口味偏好: ${tastes}
+酒類偏好: ${spirit}`;
+
+    const fullPrompt = textPrompt + `
 
 請以 JSON array 格式回覆，每個物件包含以下欄位：
 - name_zh: 飲品中文名稱
-- name_en: 英文名稱
+- name_en: 英文名稱（用於搜尋圖片，請給出精準的英文名，例如 "Old Fashioned" 或 "Negroni"）
+- photo_query: 用於搜尋照片的英文關鍵字，2～3 個詞，描述這杯酒的外觀顏色或特色，例如 "amber whisky glass ice" 或 "red negroni orange peel"
 - abv: 酒精濃度（格式如 "ABV 40%" 或 "ABV 5%"）
 - flavor_zh: 風味描述，繁體中文，2～3 句話，描述香氣、口感、餘韻
 - recipe: 陣列，每項格式為 "食材名稱|份量"（例如 "Scotch Whisky|45ml"）
@@ -200,11 +315,18 @@
 
 只回覆 JSON array，不要其他說明文字，不要 markdown 標記。`;
 
+    const messageContent = uploadedImageBase64
+      ? [
+          { type: 'image', source: { type: 'base64', media_type: uploadedImageType, data: uploadedImageBase64 } },
+          { type: 'text', text: fullPrompt }
+        ]
+      : fullPrompt;
+
     try {
       const resp = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+        body: JSON.stringify({ messages: [{ role: 'user', content: messageContent }] })
       });
 
       clearInterval(timer);
@@ -220,28 +342,43 @@
       const drinks = JSON.parse(raw);
 
       resultCards.innerHTML = '';
-      drinks.forEach(d => {
+
+      for (const d of drinks) {
+        const card = document.createElement('div');
+        card.className = 'drink-card';
+
+        const photoQuery = encodeURIComponent((d.photo_query || d.name_en || 'cocktail') + ' drink bar');
+        const photoUrl = `https://source.unsplash.com/featured/800x500/?${photoQuery}&t=${Date.now()}${Math.random()}`;
+
         const recipeHTML = (d.recipe || []).map(r => {
           const parts = r.split('|');
           return `<li><span>${parts[0]}</span><span class="recipe-amt">${parts[1] || ''}</span></li>`;
         }).join('');
-        const card = document.createElement('div');
-        card.className = 'drink-card';
+
         card.innerHTML = `
-          <div class="card-top">
-            <div>
-              <div class="drink-name-zh">${d.name_zh}</div>
-              <div class="drink-name-en">${d.name_en}</div>
-            </div>
-            <span class="abv-badge">${d.abv}</span>
+          <img class="drink-photo" src="${photoUrl}" alt="${d.name_en}" loading="lazy"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="drink-photo-placeholder" style="display:none">
+            <i class="ti ti-glass-cocktail" aria-hidden="true"></i>
           </div>
-          <p class="flavor-text">${d.flavor_zh}</p>
-          <p class="why-text">${d.why_zh}</p>
-          <p class="recipe-label">Recipe</p>
-          <ul class="recipe-list">${recipeHTML}</ul>
+          <div class="drink-body">
+            <div class="card-top">
+              <div>
+                <div class="drink-name-zh">${d.name_zh}</div>
+                <div class="drink-name-en">${d.name_en}</div>
+              </div>
+              <span class="abv-badge">${d.abv}</span>
+            </div>
+            <p class="flavor-text">${d.flavor_zh}</p>
+            <p class="why-text">${d.why_zh}</p>
+            <p class="recipe-label">Recipe</p>
+            <ul class="recipe-list">${recipeHTML}</ul>
+            <p class="photo-credit">Photo via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></p>
+          </div>
         `;
         resultCards.appendChild(card);
-      });
+      }
+
       resultArea.style.display = 'block';
 
     } catch (e) {
