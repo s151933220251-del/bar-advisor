@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Sommelier — AI 調酒顧問</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-dim: #8A6A28;
+    --gold-glow: rgba(201,168,76,0.10);
+    --bg: #0C0C0C;
+    --bg2: #141414;
+    --bg3: #1A1A1A;
+    --border: #252525;
+    --border2: #303030;
+    --text: #F0EDE6;
+    --text2: #9A9189;
+    --text3: #5C5851;
+  }
+
+  html, body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    padding: 40px 32px 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .logo-ring {
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .site-name {
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 2px;
+    font-style: italic;
+  }
+  .site-sub {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--text2);
+    text-transform: uppercase;
+    margin-left: 46px;
+  }
+
+  /* ── Form ── */
+  .form-section {
+    padding: 28px 32px 0;
+  }
+  .field-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  @media(max-width:520px){
+    .two-col { grid-template-columns: 1fr; }
+  }
+  .text-input {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .text-input:focus { border-color: var(--gold-dim); }
+  .text-input::placeholder { color: var(--text3); }
+
+  /* Taste pills */
+  .taste-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .taste-btn {
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: 2px;
+    padding: 7px 16px;
+    color: var(--text2);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .2s;
+  }
+  .taste-btn:hover { border-color: var(--gold-dim); color: var(--text); }
+  .taste-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-glow);
+  }
+
+  /* Spirit grid */
+  .spirit-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  @media(max-width:400px){ .spirit-grid { grid-template-columns: repeat(2,1fr); } }
+  .spirit-btn {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 16px 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s;
+    font-family: inherit;
+  }
+  .spirit-btn:hover { border-color: var(--gold-dim); }
+  .spirit-btn.active {
+    border-color: var(--gold);
+    background: var(--gold-glow);
+  }
+  .spirit-icon {
+    display: block;
+    font-size: 22px;
+    color: var(--text2);
+    margin-bottom: 6px;
+  }
+  .spirit-btn.active .spirit-icon { color: var(--gold); }
+  .spirit-name {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text2);
+  }
+  .spirit-btn.active .spirit-name { color: var(--gold); }
+
+  /* API key */
+  .api-row {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .api-prefix {
+    background: var(--bg3);
+    border-right: 1px solid var(--border2);
+    padding: 11px 14px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text3);
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+  }
+  .api-input {
+    flex: 1;
+    background: var(--bg2);
+    border: none;
+    padding: 11px 14px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+    outline: none;
+  }
+  .api-input::placeholder { color: var(--text3); font-family: 'Georgia', serif; }
+
+  /* CTA */
+  .cta-btn {
+    width: 100%;
+    background: var(--gold);
+    border: none;
+    color: #0C0C0C;
+    padding: 16px;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    border-radius: 2px;
+    margin-bottom: 28px;
+    transition: background .2s;
+  }
+  .cta-btn:hover { background: #D4B05E; }
+  .cta-btn:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; letter-spacing: 3px; }
+
+  /* Divider */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 0 24px;
+  }
+
+  /* Loading */
+  .loading-area {
+    text-align: center;
+    padding: 40px 0;
+    display: none;
+  }
+  .loading-dot-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  .dot:nth-child(2){ animation-delay: .2s; }
+  .dot:nth-child(3){ animation-delay: .4s; }
+  @keyframes pulse {
+    0%,80%,100%{ opacity:.2; transform:scale(.8); }
+    40%{ opacity:1; transform:scale(1); }
+  }
+  .loading-text {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* Result */
+  .result-area { display: none; }
+  .result-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .drink-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    transition: border-color .3s;
+  }
+  .drink-card:hover { border-color: var(--gold-dim); }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .drink-name-zh {
+    font-size: 20px;
+    color: var(--text);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .drink-name-en {
+    font-size: 12px;
+    color: var(--text2);
+    letter-spacing: 1.5px;
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+  .abv-badge {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    background: var(--gold-glow);
+    border: 1px solid var(--gold-dim);
+    border-radius: 2px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+  .flavor-text {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.75;
+    margin-bottom: 10px;
+  }
+  .why-text {
+    font-size: 12px;
+    color: var(--gold-dim);
+    font-style: italic;
+    margin-bottom: 16px;
+    padding-left: 12px;
+    border-left: 2px solid var(--gold-dim);
+  }
+  .recipe-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .recipe-list {
+    list-style: none;
+  }
+  .recipe-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text2);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .recipe-list li:last-child { border: none; }
+  .recipe-amt { color: var(--gold); }
+
+  /* Error */
+  .error-box {
+    background: rgba(163,45,45,0.12);
+    border: 1px solid rgba(163,45,45,0.4);
+    border-radius: 4px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #F09595;
+    line-height: 1.6;
+  }
+
+  /* Footer */
+  .site-footer {
+    padding: 32px 32px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="site-header">
+    <div class="logo-row">
+      <div class="logo-ring">
+        <i class="ti ti-glass-cocktail" style="font-size:16px" aria-hidden="true"></i>
+      </div>
+      <h1 class="site-name">The Sommelier</h1>
+    </div>
+    <p class="site-sub">AI 調酒顧問 &nbsp;·&nbsp; Your personal bartender, powered by Claude</p>
+  </header>
+
+  <main class="form-section">
+
+    <div class="two-col">
+      <div>
+        <label class="field-label" for="mood">今晚心情 / Tonight's mood</label>
+        <input class="text-input" id="mood" type="text" placeholder="放鬆、慶祝、失落...">
+      </div>
+      <div>
+        <label class="field-label" for="occasion">場合 / Occasion</label>
+        <input class="text-input" id="occasion" type="text" placeholder="獨飲、約會、朋友聚...">
+      </div>
+    </div>
+
+    <label class="field-label">口味偏好 / Taste preference</label>
+    <div class="taste-wrap" id="taste-wrap">
+      <button class="taste-btn" data-v="甜 Sweet">甜 Sweet</button>
+      <button class="taste-btn" data-v="苦 Bitter">苦 Bitter</button>
+      <button class="taste-btn" data-v="酸 Sour">酸 Sour</button>
+      <button class="taste-btn" data-v="烈 Strong">烈 Strong</button>
+      <button class="taste-btn" data-v="清爽 Light">清爽 Light</button>
+      <button class="taste-btn" data-v="煙燻 Smoky">煙燻 Smoky</button>
+      <button class="taste-btn" data-v="花果 Fruity">花果 Fruity</button>
+    </div>
+
+    <label class="field-label">酒類偏好 / Spirit category</label>
+    <div class="spirit-grid" id="spirit-grid">
+      <button class="spirit-btn" data-v="Whisky / Bourbon">
+        <span class="spirit-icon"><i class="ti ti-glass-full" aria-hidden="true"></i></span>
+        <span class="spirit-name">Whisky</span>
+      </button>
+      <button class="spirit-btn" data-v="Cocktail">
+        <span class="spirit-icon"><i class="ti ti-glass-cocktail" aria-hidden="true"></i></span>
+        <span class="spirit-name">Cocktail</span>
+      </button>
+      <button class="spirit-btn" data-v="Wine / Champagne">
+        <span class="spirit-icon"><i class="ti ti-wine" aria-hidden="true"></i></span>
+        <span class="spirit-name">Wine</span>
+      </button>
+      <button class="spirit-btn" data-v="Craft Beer">
+        <span class="spirit-icon"><i class="ti ti-beer" aria-hidden="true"></i></span>
+        <span class="spirit-name">Beer</span>
+      </button>
+    </div>
+
+    <label class="field-label" for="api-key">Anthropic API Key</label>
+    <div class="api-row">
+      <span class="api-prefix"><i class="ti ti-lock" style="font-size:14px;margin-right:6px" aria-hidden="true"></i>Key</span>
+      <input class="api-input" id="api-key" type="password" placeholder="sk-ant-api03-...（輸入後不會被記錄）">
+    </div>
+
+    <button class="cta-btn" id="ask-btn">Ask the Bartender</button>
+
+    <hr class="section-divider">
+
+    <div class="loading-area" id="loading-area">
+      <div class="loading-dot-row">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+      <p class="loading-text" id="loading-text">Consulting the bartender...</p>
+    </div>
+
+    <div class="result-area" id="result-area">
+      <p class="result-label">Tonight's recommendation</p>
+      <div id="result-cards"></div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <span>The Sommelier &copy; 2026</span>
+    <span>Powered by Claude API &nbsp;·&nbsp; Built with GitHub Pages</span>
+  </footer>
+
+</div>
+
+<script>
+const tasteWrap = document.getElementById('taste-wrap');
+const spiritGrid = document.getElementById('spirit-grid');
+const askBtn = document.getElementById('ask-btn');
+const loadingArea = document.getElementById('loading-area');
+const loadingText = document.getElementById('loading-text');
+const resultArea = document.getElementById('result-area');
+const resultCards = document.getElementById('result-cards');
+
+tasteWrap.querySelectorAll('.taste-btn').forEach(b => {
+  b.addEventListener('click', () => b.classList.toggle('active'));
+});
+
+spiritGrid.querySelectorAll('.spirit-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    spiritGrid.querySelectorAll('.spirit-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+  });
+});
+
+const loadingPhrases = [
+  'Consulting the bartender...',
+  'Checking the cellar...',
+  'Selecting the perfect pour...',
+  'Crafting your recommendation...'
+];
+
+askBtn.addEventListener('click', async () => {
+  const apiKey = document.getElementById('api-key').value.trim();
+  const mood = document.getElementById('mood').value.trim() || '放鬆';
+  const occasion = document.getElementById('occasion').value.trim() || '獨飲';
+  const tastes = [...tasteWrap.querySelectorAll('.taste-btn.active')].map(b => b.dataset.v).join(', ') || '任何口味';
+  const spirit = spiritGrid.querySelector('.spirit-btn.active')?.dataset.v || '任何';
+
+  if (!apiKey) {
+    resultCards.innerHTML = '<div class="error-box">請先輸入 Anthropic API Key。<br>可至 <a href="https://console.anthropic.com" target="_blank" style="color:var(--gold)">console.anthropic.com</a> 申請。</div>';
+    resultArea.style.display = 'block';
+    return;
+  }
+
+  resultArea.style.display = 'none';
+  loadingArea.style.display = 'block';
+  askBtn.disabled = true;
+  askBtn.textContent = 'Consulting...';
+
+  let idx = 0;
+  const timer = setInterval(() => {
+    idx = (idx + 1) % loadingPhrases.length;
+    loadingText.textContent = loadingPhrases[idx];
+  }, 1800);
+
+  const prompt = `你是一位頂級酒吧的資深調酒師，請根據以下資訊推薦 2 款最適合今晚的飲品。
+
+心情: ${mood}
+場合: ${occasion}
+口味偏好: ${tastes}
+酒類偏好: ${spirit}
+
+請以 JSON array 格式回覆，每個物件包含以下欄位：
+- name_zh: 飲品中文名稱
+- name_en: 英文名稱
+- abv: 酒精濃度（格式如 "ABV 40%" 或 "ABV 5%"）
+- flavor_zh: 風味描述，繁體中文，2～3 句話，描述香氣、口感、餘韻
+- recipe: 陣列，每項格式為 "食材名稱|份量"（例如 "Scotch Whisky|45ml"，不含酒精版本也可用茶或果汁）
+- why_zh: 一句話說明為什麼今晚適合喝這杯，語氣像老朋友在建議你
+
+只回覆 JSON array，不要其他說明文字，不要 markdown 標記。`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    clearInterval(timer);
+    loadingArea.style.display = 'none';
+    askBtn.disabled = false;
+    askBtn.textContent = 'Ask the Bartender';
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.error?.message || `HTTP ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    let raw = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
+    raw = raw.replace(/```json|```/g, '').trim();
+    const drinks = JSON.parse(raw);
+
+    resultCards.innerHTML = '';
+    drinks.forEach(d => {
+      const recipeHTML = (d.recipe || []).map(r => {
+        const parts = r.split('|');
+        const name = parts[0] || r;
+        const amt = parts[1] || '';
+        return `<li><span>${name}</span><span class="recipe-amt">${amt}</span></li>`;
+      }).join('');
+
+      const card = document.createElement('div');
+      card.className = 'drink-card';
+      card.innerHTML = `
+        <div class="card-top">
+          <div>
+            <div class="drink-name-zh">${d.name_zh}</div>
+            <div class="drink-name-en">${d.name_en}</div>
+          </div>
+          <span class="abv-badge">${d.abv}</span>
+        </div>
+        <p class="flavor-text">${d.flavor_zh}</p>
+        <p class="why-text">${d.why_zh}</p>
+        <p class="recipe-label">Recipe</p>
+        <ul class="recipe-list">${recipeHTML}</ul>
+      `;
+      resultCards.appendChild(card);
+    });
+
+    resultArea.style.display = 'block';
+
+  } catch (e) {
+    clearInterval(timer);
+    loadingArea.style.display = 'none';
+    askBtn.disabled = false;
+    askBtn.textContent = 'Ask the Bartender';
+    resultCards.innerHTML = `<div class="error-box">發生錯誤：${e.message}<br><br>請確認 API Key 正確，且帳號有足夠額度。</div>`;
+    resultArea.style.display = 'block';
+  }
+});
+</script>
+</body>
+</html>
