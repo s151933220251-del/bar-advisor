@@ -16,6 +16,7 @@
   html, body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Georgia', serif; }
   .page { max-width: 720px; margin: 0 auto; padding: 0 0 80px; }
 
+  /* Header */
   .site-header { padding: 40px 32px 28px; border-bottom: 1px solid var(--border); }
   .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
   .logo-ring { width: 34px; height: 34px; border: 1.5px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
@@ -26,10 +27,32 @@
   .field-label { display: block; font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
   .field-label-sub { display: block; font-size: 11px; color: var(--text3); letter-spacing: 1px; margin-bottom: 10px; font-style: italic; }
 
+  /* Chat — top */
+  .chat-top { background: var(--bg2); border: 1px solid var(--border2); border-radius: 6px; padding: 20px 20px 16px; margin-bottom: 28px; }
+  .chat-top-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .chat-top-hint { font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 14px; }
+  .chat-messages { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .chat-msg { max-width: 88%; padding: 11px 15px; font-size: 14px; line-height: 1.65; border-radius: 4px; }
+  .chat-msg.user { align-self: flex-end; background: var(--gold-glow); border: 1px solid var(--gold-dim); color: var(--text); }
+  .chat-msg.ai { align-self: flex-start; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
+  .chat-msg.ai.loading { color: var(--text3); font-style: italic; }
+  .chat-msg.ai.intro { color: var(--text2); }
+  .chat-input-row { display: flex; gap: 8px; }
+  .chat-input { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
+  .chat-input:focus { border-color: var(--gold-dim); }
+  .chat-input::placeholder { color: var(--text3); }
+  .chat-send { background: transparent; border: 1px solid var(--gold-dim); border-radius: 3px; padding: 10px 16px; color: var(--gold); font-size: 12px; cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap; letter-spacing: 1px; }
+  .chat-send:hover { background: var(--gold-glow); }
+  .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Divider with label */
+  .or-divider { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+  .or-divider::before, .or-divider::after { content: ''; flex: 1; border-top: 1px solid var(--border); }
+  .or-divider span { font-size: 10px; letter-spacing: 3px; color: var(--text3); text-transform: uppercase; white-space: nowrap; }
+
+  /* Form fields */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
   @media(max-width:520px){ .two-col { grid-template-columns: 1fr; } }
-
-  /* Select dropdown */
   .select-wrap { position: relative; }
   .select-wrap i { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 16px; pointer-events: none; }
   .styled-select { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 11px 36px 11px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; appearance: none; cursor: pointer; transition: border-color .2s; }
@@ -67,7 +90,7 @@
   .upload-hint { font-size: 11px; color: var(--text3); margin-top: 4px; font-style: italic; }
   .preview-wrap { margin-top: 12px; position: relative; display: none; }
   .preview-img-el { width: 100%; max-height: 200px; object-fit: contain; border-radius: 4px; border: 1px solid var(--border2); }
-  .remove-btn { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); border: 1px solid var(--border2); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: var(--text2); cursor: pointer; font-size: 14px; transition: all .2s; }
+  .remove-btn { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); border: 1px solid var(--border2); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; color: var(--text2); cursor: pointer; transition: all .2s; }
   .remove-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
   .upload-tag { display: inline-block; margin-top: 8px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--gold-dim); border-radius: 2px; padding: 3px 10px; }
 
@@ -77,6 +100,7 @@
 
   .section-divider { border: none; border-top: 1px solid var(--border); margin: 0 0 24px; }
 
+  /* Loading */
   .loading-area { text-align: center; padding: 40px 0; display: none; }
   .loading-dot-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 1.4s ease-in-out infinite; }
@@ -90,9 +114,13 @@
   .result-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
   .drink-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 6px; overflow: hidden; margin-bottom: 20px; transition: border-color .3s; }
   .drink-card:hover { border-color: var(--gold-dim); }
-  .drink-photo { width: 100%; height: 220px; object-fit: cover; display: block; background: var(--bg3); }
-  .drink-photo-placeholder { width: 100%; height: 220px; background: var(--bg3); display: none; align-items: center; justify-content: center; }
+
+  /* 圖片：全寬、等比、不裁切 */
+  .drink-photo-wrap { width: 100%; background: var(--bg3); display: flex; align-items: center; justify-content: center; min-height: 140px; }
+  .drink-photo { width: 100%; height: auto; display: block; object-fit: contain; max-height: 320px; }
+  .drink-photo-placeholder { width: 100%; height: 160px; background: var(--bg3); display: flex; align-items: center; justify-content: center; }
   .drink-photo-placeholder i { font-size: 32px; color: var(--text3); }
+
   .drink-body { padding: 22px 24px; }
   .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .drink-name-zh { font-size: 20px; color: var(--text); font-style: italic; font-weight: 400; }
@@ -105,25 +133,9 @@
   .recipe-list li { display: flex; justify-content: space-between; font-size: 13px; color: var(--text2); padding: 6px 0; border-bottom: 1px solid var(--border); }
   .recipe-list li:last-child { border: none; }
   .recipe-amt { color: var(--gold); }
-  .photo-credit { font-size: 10px; color: var(--text3); letter-spacing: 1px; margin-top: 12px; font-style: italic; }
+  .photo-credit { font-size: 10px; color: var(--text3); margin-top: 12px; font-style: italic; }
   .photo-credit a { color: var(--text3); text-decoration: none; }
   .photo-credit a:hover { color: var(--gold); }
-
-  /* Chat */
-  .chat-section { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px; display: none; }
-  .chat-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
-  .chat-messages { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; min-height: 60px; }
-  .chat-msg { max-width: 85%; padding: 12px 16px; border-radius: 4px; font-size: 14px; line-height: 1.65; }
-  .chat-msg.user { align-self: flex-end; background: var(--gold-glow); border: 1px solid var(--gold-dim); color: var(--text); border-radius: 4px; }
-  .chat-msg.ai { align-self: flex-start; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); }
-  .chat-msg.ai.loading { color: var(--text3); font-style: italic; }
-  .chat-input-row { display: flex; gap: 10px; }
-  .chat-input { flex: 1; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 11px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
-  .chat-input:focus { border-color: var(--gold-dim); }
-  .chat-input::placeholder { color: var(--text3); }
-  .chat-send { background: transparent; border: 1px solid var(--gold-dim); border-radius: 3px; padding: 11px 18px; color: var(--gold); font-size: 13px; cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap; }
-  .chat-send:hover { background: var(--gold-glow); }
-  .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .error-box { background: rgba(163,45,45,0.12); border: 1px solid rgba(163,45,45,0.4); border-radius: 4px; padding: 16px 20px; font-size: 13px; color: #F09595; line-height: 1.6; }
   .site-footer { padding: 32px 32px 0; border-top: 1px solid var(--border); margin-top: 32px; font-size: 11px; color: var(--text3); letter-spacing: 1px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
@@ -141,6 +153,25 @@
 
   <main class="form-section">
 
+    <!-- 對話框在最上面 -->
+    <div class="chat-top">
+      <div class="chat-top-label">
+        <i class="ti ti-message-2" style="font-size:14px" aria-hidden="true"></i>
+        先跟調酒師聊聊 / Tell the bartender more
+      </div>
+      <p class="chat-top-hint">描述得越詳細，推薦越精準。也可以跳過，直接用下方選單。</p>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-msg ai intro">晚安！我是今晚的調酒師。告訴我你想喝什麼感覺的東西，或是有什麼特別的偏好——我來幫你找最適合的一杯。</div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" type="text" placeholder="例如：想喝苦一點的，不要太甜，今天很累...">
+        <button class="chat-send" id="chat-send">送出</button>
+      </div>
+    </div>
+
+    <div class="or-divider"><span>或直接選擇</span></div>
+
+    <!-- 心情 & 場合 -->
     <div class="two-col">
       <div>
         <label class="field-label" for="mood-select">今晚心情 / Tonight's mood</label>
@@ -215,7 +246,7 @@
 
     <div class="upload-area">
       <label class="field-label">酒單照片 / Menu photo <span style="color:var(--text3);font-size:10px;text-transform:none;font-style:italic;letter-spacing:1px">（選填）</span></label>
-      <span class="field-label-sub">上傳酒吧菜單或特調照片，AI 會從中推薦最適合你的選項</span>
+      <span class="field-label-sub">上傳酒吧菜單，AI 會從中推薦最適合你的選項</span>
       <div class="upload-box" id="upload-box">
         <input type="file" id="menu-img" accept="image/*">
         <i class="ti ti-camera upload-icon" aria-hidden="true"></i>
@@ -244,16 +275,6 @@
       <div id="result-cards"></div>
     </div>
 
-    <!-- Chat -->
-    <div class="chat-section" id="chat-section">
-      <p class="chat-label"><i class="ti ti-message-2" style="font-size:13px;margin-right:6px;vertical-align:-1px" aria-hidden="true"></i>繼續問調酒師 / Ask the bartender</p>
-      <div class="chat-messages" id="chat-messages"></div>
-      <div class="chat-input-row">
-        <input class="chat-input" id="chat-input" type="text" placeholder="例如：有沒有不那麼甜的替代方案？">
-        <button class="chat-send" id="chat-send">送出</button>
-      </div>
-    </div>
-
   </main>
 
   <footer class="site-footer">
@@ -278,7 +299,6 @@
   const previewImg = document.getElementById('preview-img');
   const removeBtn = document.getElementById('remove-btn');
   const uploadBox = document.getElementById('upload-box');
-  const chatSection = document.getElementById('chat-section');
   const chatMessages = document.getElementById('chat-messages');
   const chatInput = document.getElementById('chat-input');
   const chatSend = document.getElementById('chat-send');
@@ -290,9 +310,14 @@
   let uploadedImageBase64 = null;
   let uploadedImageType = null;
   let chatHistory = [];
-  let lastRecommendation = '';
 
-  // Dropdowns with "other"
+  const systemPrompt = `你是一位頂級酒吧的資深調酒師，風格優雅、專業又親切。用繁體中文回應，語氣像老朋友。
+重要規則：
+- 選擇威士忌時，只推薦純飲、on the rocks 或加水，絕對不能推薦含其他調料的雞尾酒
+- 選擇雞尾酒時，才推薦調製類飲品
+- 選擇葡萄酒時，只推薦紅酒、白酒或氣泡酒
+- 選擇啤酒時，只推薦精釀或生啤`;
+
   moodSelect.addEventListener('change', () => {
     moodOther.style.display = moodSelect.value === '其他' ? 'block' : 'none';
   });
@@ -301,10 +326,10 @@
   });
 
   function getMood() {
-    return moodSelect.value === '其他' ? (moodOther.value.trim() || '放鬆') : (moodSelect.value || '放鬆');
+    return moodSelect.value === '其他' ? (moodOther.value.trim() || '放鬆') : (moodSelect.value || '');
   }
   function getOccasion() {
-    return occasionSelect.value === '其他' ? (occasionOther.value.trim() || '獨飲') : (occasionSelect.value || '獨飲');
+    return occasionSelect.value === '其他' ? (occasionOther.value.trim() || '獨飲') : (occasionSelect.value || '');
   }
 
   tasteWrap.querySelectorAll('.taste-btn').forEach(b => {
@@ -341,6 +366,47 @@
     menuImg.value = '';
   });
 
+  function addChatBubble(text, role, extraClass = '') {
+    const div = document.createElement('div');
+    div.className = `chat-msg ${role}${extraClass ? ' ' + extraClass : ''}`;
+    div.textContent = text;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return div;
+  }
+
+  async function sendChat() {
+    const msg = chatInput.value.trim();
+    if (!msg || chatSend.disabled) return;
+    addChatBubble(msg, 'user');
+    const loadBubble = addChatBubble('調酒師正在思考...', 'ai', 'loading');
+    chatInput.value = '';
+    chatSend.disabled = true;
+    chatHistory.push({ role: 'user', content: msg });
+    try {
+      const resp = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ system: systemPrompt, messages: chatHistory })
+      });
+      const data = await resp.json();
+      const reply = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
+      chatHistory.push({ role: 'assistant', content: reply });
+      loadBubble.className = 'chat-msg ai';
+      loadBubble.textContent = reply;
+    } catch {
+      loadBubble.className = 'chat-msg ai';
+      loadBubble.textContent = '抱歉，暫時無法回應，請稍後再試。';
+    }
+    chatSend.disabled = false;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  chatSend.addEventListener('click', sendChat);
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+  });
+
   async function fetchPexelsPhoto(query) {
     try {
       const resp = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`, {
@@ -365,40 +431,28 @@
   askBtn.addEventListener('click', async () => {
     const mood = getMood();
     const occasion = getOccasion();
-    const tastes = [...tasteWrap.querySelectorAll('.taste-btn.active')].map(b => b.dataset.v).join(', ') || '任何口味';
+    const tastes = [...tasteWrap.querySelectorAll('.taste-btn.active')].map(b => b.dataset.v).join(', ') || '';
     const spiritBtn = spiritGrid.querySelector('.spirit-btn.active');
-    const spiritLabel = spiritBtn ? spiritBtn.dataset.label : '任何種類的酒';
+    const spiritLabel = spiritBtn ? spiritBtn.dataset.label : '任何種類';
 
-    resultArea.style.display = 'none';
-    chatSection.style.display = 'none';
-    chatHistory = [];
-    chatMessages.innerHTML = '';
-    loadingArea.style.display = 'block';
-    askBtn.disabled = true;
-    askBtn.textContent = 'Consulting...';
+    const chatContext = chatHistory.length > 0
+      ? '\n\n用戶與調酒師的對話紀錄：\n' + chatHistory.map(m => (m.role === 'user' ? '用戶：' : '調酒師：') + m.content).join('\n')
+      : '';
 
-    let idx = 0;
-    const timer = setInterval(() => {
-      idx = (idx + 1) % loadingPhrases.length;
-      loadingText.textContent = loadingPhrases[idx];
-    }, 1800);
+    const parts = [];
+    if (mood) parts.push(`心情：${mood}`);
+    if (occasion) parts.push(`場合：${occasion}`);
+    if (tastes) parts.push(`口味偏好：${tastes}`);
+    parts.push(`酒類：${spiritLabel}`);
 
-    const systemPrompt = `你是一位頂級酒吧的資深調酒師，風格優雅、專業又親切。
-重要規則：
-- 選擇威士忌時，只推薦純飲、on the rocks 或加水，絕對不能推薦含有其他調料的雞尾酒
-- 選擇雞尾酒時，才推薦調製類的雞尾酒
-- 選擇葡萄酒時，只推薦紅酒、白酒或氣泡酒
-- 選擇啤酒時，只推薦精釀或生啤
-- 推薦要符合用戶的心情和場合`;
+    const basePrompt = uploadedImageBase64
+      ? `我上傳了一張酒吧菜單，請先閱讀圖片內容，再根據以下資訊推薦 2 款飲品：\n${parts.join('\n')}${chatContext}`
+      : `請根據以下資訊推薦 2 款最適合今晚的飲品：\n${parts.join('\n')}${chatContext}`;
 
-    const userPrompt = uploadedImageBase64
-      ? `我上傳了一張酒吧菜單或特調照片，請先閱讀圖片中的酒單，然後根據以下資訊推薦 2 款飲品：\n\n心情: ${mood}\n場合: ${occasion}\n口味偏好: ${tastes}\n酒類: ${spiritLabel}`
-      : `請根據以下資訊推薦 2 款最適合今晚的飲品：\n\n心情: ${mood}\n場合: ${occasion}\n口味偏好: ${tastes}\n酒類: ${spiritLabel}`;
-
-    const fullPrompt = userPrompt + `\n\n請以 JSON array 格式回覆，每個物件包含：
+    const fullPrompt = basePrompt + `\n\n請以 JSON array 格式回覆，每個物件包含：
 - name_zh: 中文名稱
 - name_en: 英文名稱（精準，例如 "Macallan 12" 或 "Negroni"）
-- photo_query: 搜尋照片用的英文關鍵字 3～4 個詞，描述這杯酒的外觀，例如 "whisky glass amber ice rocks" 或 "red negroni cocktail orange"
+- photo_query: 搜尋照片的英文關鍵字 3～4 個詞，描述外觀，例如 "whisky glass amber ice rocks"
 - abv: 酒精濃度（格式 "ABV 40%"）
 - flavor_zh: 風味描述 2～3 句，繁體中文
 - recipe: 陣列，格式 "食材|份量"
@@ -413,14 +467,22 @@
         ]
       : fullPrompt;
 
+    resultArea.style.display = 'none';
+    loadingArea.style.display = 'block';
+    askBtn.disabled = true;
+    askBtn.textContent = 'Consulting...';
+
+    let idx = 0;
+    const timer = setInterval(() => {
+      idx = (idx + 1) % loadingPhrases.length;
+      loadingText.textContent = loadingPhrases[idx];
+    }, 1800);
+
     try {
       const resp = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system: systemPrompt,
-          messages: [{ role: 'user', content: messageContent }]
-        })
+        body: JSON.stringify({ system: systemPrompt, messages: [{ role: 'user', content: messageContent }] })
       });
 
       clearInterval(timer);
@@ -429,41 +491,31 @@
       askBtn.textContent = 'Ask the Bartender';
 
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-
       const data = await resp.json();
       let raw = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
       raw = raw.replace(/```json|```/g, '').trim();
       const drinks = JSON.parse(raw);
 
-      lastRecommendation = drinks.map(d => `${d.name_zh} (${d.name_en}): ${d.flavor_zh}`).join('\n');
-      chatHistory = [
-        { role: 'user', content: fullPrompt },
-        { role: 'assistant', content: raw }
-      ];
-
       resultCards.innerHTML = '';
-
       for (const d of drinks) {
         const card = document.createElement('div');
         card.className = 'drink-card';
-
         const photoData = await fetchPexelsPhoto(d.photo_query || d.name_en + ' cocktail drink');
-
         const recipeHTML = (d.recipe || []).map(r => {
           const parts = r.split('|');
           return `<li><span>${parts[0]}</span><span class="recipe-amt">${parts[1] || ''}</span></li>`;
         }).join('');
 
-        const photoHTML = photoData
-          ? `<img class="drink-photo" src="${photoData.url}" alt="${d.name_en}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-          : '';
-        const placeholderHTML = `<div class="drink-photo-placeholder" style="display:${photoData ? 'none' : 'flex'}"><i class="ti ti-glass-cocktail" aria-hidden="true"></i></div>`;
+        const imgBlock = photoData
+          ? `<div class="drink-photo-wrap"><img class="drink-photo" src="${photoData.url}" alt="${d.name_en}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'drink-photo-placeholder\\'><i class=\\'ti ti-glass-cocktail\\'></i></div>'"></div>`
+          : `<div class="drink-photo-placeholder"><i class="ti ti-glass-cocktail" aria-hidden="true"></i></div>`;
+
         const creditHTML = photoData
           ? `<p class="photo-credit">Photo by <a href="${photoData.link}" target="_blank" rel="noopener">${photoData.photographer}</a> via <a href="https://pexels.com" target="_blank" rel="noopener">Pexels</a></p>`
           : '';
 
         card.innerHTML = `
-          ${photoHTML}${placeholderHTML}
+          ${imgBlock}
           <div class="drink-body">
             <div class="card-top">
               <div>
@@ -477,13 +529,10 @@
             <p class="recipe-label">Recipe</p>
             <ul class="recipe-list">${recipeHTML}</ul>
             ${creditHTML}
-          </div>
-        `;
+          </div>`;
         resultCards.appendChild(card);
       }
-
       resultArea.style.display = 'block';
-      chatSection.style.display = 'block';
 
     } catch (e) {
       clearInterval(timer);
@@ -493,57 +542,6 @@
       resultCards.innerHTML = `<div class="error-box">發生錯誤：${e.message}</div>`;
       resultArea.style.display = 'block';
     }
-  });
-
-  async function sendChat() {
-    const msg = chatInput.value.trim();
-    if (!msg || chatSend.disabled) return;
-
-    const userBubble = document.createElement('div');
-    userBubble.className = 'chat-msg user';
-    userBubble.textContent = msg;
-    chatMessages.appendChild(userBubble);
-
-    const loadBubble = document.createElement('div');
-    loadBubble.className = 'chat-msg ai loading';
-    loadBubble.textContent = '調酒師正在思考...';
-    chatMessages.appendChild(loadBubble);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    chatInput.value = '';
-    chatSend.disabled = true;
-
-    chatHistory.push({ role: 'user', content: msg });
-
-    try {
-      const resp = await fetch(WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system: '你是一位頂級酒吧的資深調酒師，風格優雅親切。根據之前的推薦內容回答用戶的追問，用繁體中文回答，語氣像老朋友在聊天。',
-          messages: chatHistory
-        })
-      });
-
-      const data = await resp.json();
-      const reply = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
-      chatHistory.push({ role: 'assistant', content: reply });
-
-      loadBubble.className = 'chat-msg ai';
-      loadBubble.textContent = reply;
-
-    } catch (e) {
-      loadBubble.className = 'chat-msg ai';
-      loadBubble.textContent = '抱歉，暫時無法回應，請稍後再試。';
-    }
-
-    chatSend.disabled = false;
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  chatSend.addEventListener('click', sendChat);
-  chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
   });
 </script>
 </body>
