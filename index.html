@@ -44,6 +44,9 @@
   .chat-send { background: transparent; border: 1px solid var(--gold-dim); border-radius: 3px; padding: 10px 16px; color: var(--gold); font-size: 12px; cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap; letter-spacing: 1px; }
   .chat-send:hover { background: var(--gold-glow); }
   .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .chat-generate-btn { display: flex; align-items: center; gap: 8px; margin-top: 4px; background: var(--gold); border: none; border-radius: 3px; padding: 10px 16px; color: #0C0C0C; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; transition: background .2s; align-self: flex-start; }
+  .chat-generate-btn:hover { background: #D4B05E; }
+  .chat-generate-btn i { font-size: 14px; }
 
   /* Divider with label */
   .or-divider { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
@@ -332,7 +335,15 @@
   let uploadedImageType = null;
   let chatHistory = [];
 
-  const systemPrompt = `你是一位頂級酒吧的資深調酒師，風格優雅、專業又親切。用繁體中文回應，語氣像老朋友。
+  const chatSystemPrompt = `你是一位頂級酒吧的資深調酒師，風格優雅親切，像老朋友在聊天。用繁體中文回應。
+規則：
+- 回覆要簡短，最多 3～4 句話
+- 只說推薦哪款酒、一句話說原因，不要列食材或做法
+- 不要用 markdown、星號、井號、emoji
+- 語氣自然口語，像在吧台邊跟客人聊天
+- 威士忌只推純飲或 on the rocks，不推雞尾酒`;
+
+  const recommendSystemPrompt = `你是一位頂級酒吧的資深調酒師，風格優雅、專業又親切。用繁體中文回應，語氣像老朋友。
 重要規則：
 - 選擇威士忌時，只推薦純飲、on the rocks 或加水，絕對不能推薦含其他調料的雞尾酒
 - 選擇雞尾酒時，才推薦調製類飲品
@@ -400,6 +411,8 @@
     const msg = chatInput.value.trim();
     if (!msg || chatSend.disabled) return;
     addChatBubble(msg, 'user');
+    // remove previous generate button if any
+    document.querySelectorAll('.chat-generate-btn').forEach(b => b.remove());
     const loadBubble = addChatBubble('調酒師正在思考...', 'ai', 'loading');
     chatInput.value = '';
     chatSend.disabled = true;
@@ -408,13 +421,22 @@
       const resp = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ system: systemPrompt, messages: chatHistory })
+        body: JSON.stringify({ system: chatSystemPrompt, messages: chatHistory })
       });
       const data = await resp.json();
       const reply = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
       chatHistory.push({ role: 'assistant', content: reply });
       loadBubble.className = 'chat-msg ai';
       loadBubble.textContent = reply;
+      // add generate button below reply
+      const genBtn = document.createElement('button');
+      genBtn.className = 'chat-generate-btn';
+      genBtn.innerHTML = '<i class="ti ti-wand" aria-hidden="true"></i> 依此生成推薦卡片';
+      genBtn.addEventListener('click', () => {
+        document.querySelectorAll('.chat-generate-btn').forEach(b => b.remove());
+        askBtn.click();
+      });
+      chatMessages.appendChild(genBtn);
     } catch {
       loadBubble.className = 'chat-msg ai';
       loadBubble.textContent = '抱歉，暫時無法回應，請稍後再試。';
@@ -532,7 +554,7 @@
       const resp = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ system: systemPrompt, messages: [{ role: 'user', content: messageContent }] })
+        body: JSON.stringify({ system: recommendSystemPrompt, messages: [{ role: 'user', content: messageContent }] })
       });
 
       clearInterval(timer);
