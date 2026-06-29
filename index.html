@@ -185,8 +185,8 @@
   .comment-nickname:focus { border-color: var(--gold-dim); }
   .comment-nickname::placeholder { color: var(--text3); }
   .comment-stars { display: flex; gap: 6px; margin-bottom: 10px; }
-  .star-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text3); transition: color .15s; line-height: 1; padding: 0; }
-  .star-btn.active { color: var(--gold); }
+  .star-btn { background: none; border: none; font-size: 26px; cursor: pointer; opacity: 0.3; transition: opacity .15s, transform .15s; line-height: 1; padding: 0 2px; }
+  .star-btn.active { opacity: 1; transform: scale(1.15); }
   .comment-text { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; resize: vertical; min-height: 80px; margin-bottom: 12px; transition: border-color .2s; }
   .comment-text:focus { border-color: var(--gold-dim); }
   .comment-text::placeholder { color: var(--text3); }
@@ -358,11 +358,11 @@
       </select>
       <input class="comment-nickname" id="comment-nickname" type="text" placeholder="你的暱稱（例如：Dan）" maxlength="20">
       <div class="comment-stars" id="comment-stars">
-        <button class="star-btn" data-val="1">★</button>
-        <button class="star-btn" data-val="2">★</button>
-        <button class="star-btn" data-val="3">★</button>
-        <button class="star-btn" data-val="4">★</button>
-        <button class="star-btn" data-val="5">★</button>
+        <button class="star-btn" data-val="1" title="1分">😫</button>
+        <button class="star-btn" data-val="2" title="2分">😕</button>
+        <button class="star-btn" data-val="3" title="3分">😐</button>
+        <button class="star-btn" data-val="4" title="4分">😊</button>
+        <button class="star-btn" data-val="5" title="5分">🤩</button>
       </div>
       <textarea class="comment-text" id="comment-text" placeholder="分享你喝這杯酒的感受..."></textarea>
       <button class="comment-submit" id="comment-submit">送出評論</button>
@@ -796,7 +796,8 @@
       commentsList.innerHTML = '';
       snap.forEach(doc => {
         const d = doc.data();
-        const stars = '★'.repeat(d.rating) + '☆'.repeat(5 - d.rating);
+        const emojiMap = ['😫','😕','😐','😊','🤩'];
+        const stars = d.rating ? emojiMap[d.rating - 1] + ' ' + '★'.repeat(d.rating) + '☆'.repeat(5 - d.rating) : '';
         const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString('zh-TW') : '';
         const card = document.createElement('div');
         card.className = 'comment-card';
