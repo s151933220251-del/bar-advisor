@@ -44,6 +44,8 @@
   .chat-send { background: transparent; border: 1px solid var(--gold-dim); border-radius: 3px; padding: 10px 16px; color: var(--gold); font-size: 12px; cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap; letter-spacing: 1px; }
   .chat-send:hover { background: var(--gold-glow); }
   .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .chat-upload-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; background: transparent; border: 1px solid var(--border2); border-radius: 3px; color: var(--text3); cursor: pointer; transition: all .2s; font-size: 18px; }
+  .chat-upload-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
   .chat-generate-btn { display: flex; align-items: center; gap: 8px; margin-top: 4px; background: var(--gold); border: none; border-radius: 3px; padding: 10px 16px; color: #0C0C0C; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; transition: background .2s; align-self: flex-start; }
   .chat-generate-btn:hover { background: #D4B05E; }
   .chat-generate-btn i { font-size: 14px; }
@@ -177,7 +179,16 @@
       <div class="chat-messages" id="chat-messages">
         <div class="chat-msg ai intro">晚安！我是今晚的調酒師。告訴我你想喝什麼感覺的東西，或是有什麼特別的偏好——我來幫你找最適合的一杯。</div>
       </div>
+      <!-- inline image preview in chat -->
+      <div id="chat-img-preview" style="display:none;margin-bottom:8px;position:relative;display:none">
+        <img id="chat-img-thumb" style="max-height:80px;border-radius:4px;border:1px solid var(--border2);display:block" alt="酒單預覽">
+        <button id="chat-img-remove" aria-label="移除圖片" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);border:1px solid var(--border2);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--text2);cursor:pointer;font-size:11px;line-height:1"><i class="ti ti-x" aria-hidden="true"></i></button>
+      </div>
       <div class="chat-input-row">
+        <label class="chat-upload-btn" for="chat-img-input" title="上傳酒單照片">
+          <i class="ti ti-camera" aria-hidden="true"></i>
+          <input type="file" id="chat-img-input" accept="image/*" style="display:none">
+        </label>
         <input class="chat-input" id="chat-input" type="text" placeholder="例如：想喝苦一點的，不要太甜，今天很累...">
         <button class="chat-send" id="chat-send">送出</button>
       </div>
@@ -258,22 +269,6 @@
       </button>
     </div>
 
-    <div class="upload-area">
-      <label class="field-label">酒單照片 / Menu photo <span style="color:var(--text3);font-size:10px;text-transform:none;font-style:italic;letter-spacing:1px">（選填）</span></label>
-      <span class="field-label-sub">上傳酒吧菜單，AI 會從中推薦最適合你的選項</span>
-      <div class="upload-box" id="upload-box">
-        <input type="file" id="menu-img" accept="image/*">
-        <i class="ti ti-camera upload-icon" aria-hidden="true"></i>
-        <p class="upload-text">點擊或拖曳圖片至此</p>
-        <p class="upload-hint">支援 JPG、PNG、WEBP</p>
-      </div>
-      <div class="preview-wrap" id="preview-wrap">
-        <img class="preview-img-el" id="preview-img" src="" alt="酒單預覽">
-        <button class="remove-btn" id="remove-btn" aria-label="移除圖片"><i class="ti ti-x" style="font-size:12px" aria-hidden="true"></i></button>
-        <div style="text-align:center"><span class="upload-tag"><i class="ti ti-check" style="font-size:10px;margin-right:4px" aria-hidden="true"></i>圖片已上傳，AI 將分析酒單</span></div>
-      </div>
-    </div>
-
     <button class="cta-btn" id="ask-btn">Ask the Bartender</button>
     <hr class="section-divider">
 
@@ -318,11 +313,10 @@
   const loadingText = document.getElementById('loading-text');
   const resultArea = document.getElementById('result-area');
   const resultCards = document.getElementById('result-cards');
-  const menuImg = document.getElementById('menu-img');
-  const previewWrap = document.getElementById('preview-wrap');
-  const previewImg = document.getElementById('preview-img');
-  const removeBtn = document.getElementById('remove-btn');
-  const uploadBox = document.getElementById('upload-box');
+  const chatImgInput = document.getElementById('chat-img-input');
+  const chatImgPreview = document.getElementById('chat-img-preview');
+  const chatImgThumb = document.getElementById('chat-img-thumb');
+  const chatImgRemove = document.getElementById('chat-img-remove');
   const chatMessages = document.getElementById('chat-messages');
   const chatInput = document.getElementById('chat-input');
   const chatSend = document.getElementById('chat-send');
@@ -374,7 +368,7 @@
     });
   });
 
-  menuImg.addEventListener('change', (e) => {
+  chatImgInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -382,20 +376,18 @@
       const result = ev.target.result;
       uploadedImageBase64 = result.split(',')[1];
       uploadedImageType = file.type;
-      previewImg.src = result;
-      previewWrap.style.display = 'block';
-      uploadBox.classList.add('has-image');
+      chatImgThumb.src = result;
+      chatImgPreview.style.display = 'block';
     };
     reader.readAsDataURL(file);
   });
 
-  removeBtn.addEventListener('click', () => {
+  chatImgRemove.addEventListener('click', () => {
     uploadedImageBase64 = null;
     uploadedImageType = null;
-    previewImg.src = '';
-    previewWrap.style.display = 'none';
-    uploadBox.classList.remove('has-image');
-    menuImg.value = '';
+    chatImgThumb.src = '';
+    chatImgPreview.style.display = 'none';
+    chatImgInput.value = '';
   });
 
   function addChatBubble(text, role, extraClass = '') {
