@@ -516,8 +516,8 @@
     parts.push(`酒類：${spiritLabel}`);
 
     const basePrompt = uploadedImageBase64
-      ? `我上傳了一張酒吧菜單，請先閱讀圖片內容，再根據以下資訊推薦 2 款飲品：\n${parts.join('\n')}${chatContext}`
-      : `請根據以下資訊推薦 2 款最適合今晚的飲品：\n${parts.join('\n')}${chatContext}`;
+      ? `我上傳了一張酒吧菜單，請先閱讀圖片內容，再根據以下資訊推薦 3～4 款飲品：\n${parts.join('\n')}${chatContext}`
+      : `請根據以下資訊推薦 3～4 款最適合今晚的飲品：\n${parts.join('\n')}${chatContext}`;
 
     const fullPrompt = basePrompt + `\n\n請以 JSON array 格式回覆，每個物件包含：
 - name_zh: 中文名稱
