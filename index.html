@@ -303,7 +303,7 @@
 
   <footer class="site-footer">
     <span>The Sommelier &copy; 2026</span>
-    <span>Powered by Claude API &nbsp;·&nbsp; Illustrations via Unsplash</span>
+    <span>Powered by Claude API &nbsp;·&nbsp; Photos via Pexels</span>
   </footer>
 </div>
 
@@ -486,11 +486,20 @@
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
   });
 
+  const PEXELS_KEY = 'iOkKXjZihhHrWPtHXBm5FpSFYFuIYlpoN7OzvQU2MiD3BOr1TJDZfulq';
+
   async function fetchDrinkPhoto(query) {
-    const seed = Math.floor(Math.random() * 9999);
-    const illustrationQuery = encodeURIComponent(query + ' illustration watercolor painting cute art');
-    const url = `https://source.unsplash.com/800x500/?${illustrationQuery}&sig=${seed}`;
-    return { url };
+    try {
+      const resp = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`, {
+        headers: { Authorization: PEXELS_KEY }
+      });
+      const data = await resp.json();
+      if (data.photos && data.photos.length > 0) {
+        const pick = data.photos[Math.floor(Math.random() * Math.min(3, data.photos.length))];
+        return { url: pick.src.large, photographer: pick.photographer, link: pick.url };
+      }
+    } catch {}
+    return null;
   }
 
   const loadingPhrases = [
@@ -583,7 +592,7 @@
           : `<div class="drink-photo-placeholder"><i class="ti ti-glass-cocktail" aria-hidden="true"></i></div>`;
 
         const creditHTML = photoData
-          ? `<p class="photo-credit">Illustration via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></p>`
+          ? `<p class="photo-credit">Photo by <a href="${photoData.link}" target="_blank" rel="noopener">${photoData.photographer}</a> via <a href="https://pexels.com" target="_blank" rel="noopener">Pexels</a></p>`
           : '';
 
         card.innerHTML = `
