@@ -290,7 +290,9 @@
       <button class="taste-btn" data-v="清爽 Light">清爽 Light</button>
       <button class="taste-btn" data-v="煙燻 Smoky">煙燻 Smoky</button>
       <button class="taste-btn" data-v="花果 Fruity">花果 Fruity</button>
+      <button class="taste-btn" id="taste-other-btn" data-v="">其他</button>
     </div>
+    <input class="other-input" id="taste-other-input" type="text" placeholder="輸入其他口味偏好，例如：奶油、巧克力..." style="margin-bottom:24px;display:none">
 
     <label class="field-label">酒類偏好 / Spirit category</label>
     <div class="spirit-grid" id="spirit-grid">
@@ -443,7 +445,17 @@
   }
 
   tasteWrap.querySelectorAll('.taste-btn').forEach(b => {
-    b.addEventListener('click', () => b.classList.toggle('active'));
+    b.addEventListener('click', () => {
+      if (b.id === 'taste-other-btn') {
+        const input = document.getElementById('taste-other-input');
+        const isOpen = input.style.display !== 'none';
+        input.style.display = isOpen ? 'none' : 'block';
+        b.classList.toggle('active', !isOpen);
+        if (!isOpen) input.focus();
+      } else {
+        b.classList.toggle('active');
+      }
+    });
   });
   spiritGrid.querySelectorAll('.spirit-btn').forEach(b => {
     b.addEventListener('click', () => {
@@ -588,7 +600,11 @@
   askBtn.addEventListener('click', async () => {
     const mood = getMood();
     const occasion = getOccasion();
-    const tastes = [...tasteWrap.querySelectorAll('.taste-btn.active')].map(b => b.dataset.v).join(', ') || '';
+    const tasteOther = document.getElementById('taste-other-input').value.trim();
+    const tastes = [
+      ...[...tasteWrap.querySelectorAll('.taste-btn.active')].filter(b => b.id !== 'taste-other-btn').map(b => b.dataset.v),
+      ...(tasteOther ? [tasteOther] : [])
+    ].join(', ') || '';
     const spiritBtn = spiritGrid.querySelector('.spirit-btn.active');
     const spiritLabel = spiritBtn ? spiritBtn.dataset.label : '請平均分配推薦，每種酒類（威士忌純飲、雞尾酒、葡萄酒、精釀啤酒）各推薦一款，不要集中在同一種';
 
