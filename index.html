@@ -762,7 +762,7 @@
     commentDrinkSelect.innerHTML = '<option value="">選擇你喝的酒...</option>';
     drinks.forEach(d => {
       const opt = document.createElement('option');
-      opt.value = d.name_en;
+      opt.value = d.name_zh;
       opt.textContent = `${d.name_zh} (${d.name_en})`;
       commentDrinkSelect.appendChild(opt);
     });
@@ -778,7 +778,7 @@
       const btn = document.createElement('button');
       btn.className = 'filter-btn';
       btn.textContent = d.name_zh;
-      btn.dataset.val = d.name_en;
+      btn.dataset.val = d.name_zh;
       commentFilter.appendChild(btn);
     });
     commentFilter.querySelectorAll('.filter-btn').forEach(btn => {
@@ -846,15 +846,15 @@
     if (selectedRating === 0) { alert('請給這杯酒評分'); return; }
     if (!window._db) { alert('資料庫尚未就緒，請稍後再試'); return; }
 
-    const drinkObj = currentDrinks.find(d => d.name_en === drinkName);
+    const drinkObj = currentDrinks.find(d => d.name_zh === drinkName);
     commentSubmit.disabled = true;
     commentSubmit.textContent = '送出中...';
 
     try {
       const { collection, addDoc, serverTimestamp } = window._fbModules;
       await addDoc(collection(window._db, 'reviews'), {
-        drinkName,
-        drinkZh: drinkObj ? drinkObj.name_zh : drinkName,
+        drinkName,  // now stores zh name
+        drinkZh: drinkName,
         nickname,
         rating: selectedRating,
         text,
