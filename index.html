@@ -27,10 +27,10 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --gold: #C9A84C; --gold-dim: #8A6A28; --gold-glow: rgba(201,168,76,0.10);
-    --bg: #0C0C0C; --bg2: #141414; --bg3: #1A1A1A;
-    --border: #252525; --border2: #303030;
-    --text: #F0EDE6; --text2: #9A9189; --text3: #5C5851;
+    --gold: #B5763A; --gold-dim: #8C5A2A; --gold-glow: rgba(181,118,58,0.10);
+    --bg: #F5F0E8; --bg2: #EDE6D8; --bg3: #E4DBCA;
+    --border: #D6CBBA; --border2: #C8BAA4;
+    --text: #2C1F0E; --text2: #6B5540; --text3: #A08B72;
   }
   html, body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Georgia', serif; }
   .page { max-width: 720px; margin: 0 auto; padding: 0 0 80px; }
@@ -57,7 +57,7 @@
   .chat-msg.ai.loading { color: var(--text3); font-style: italic; }
   .chat-msg.ai.intro { color: var(--text2); }
   .chat-input-row { display: flex; gap: 8px; }
-  .chat-input { flex: 1; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
+  .chat-input { flex: 1; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
   .chat-input:focus { border-color: var(--gold-dim); }
   .chat-input::placeholder { color: var(--text3); }
   .chat-send { background: transparent; border: 1px solid var(--gold-dim); border-radius: 3px; padding: 10px 16px; color: var(--gold); font-size: 12px; cursor: pointer; font-family: inherit; transition: all .2s; white-space: nowrap; letter-spacing: 1px; }
@@ -65,7 +65,7 @@
   .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
   .chat-upload-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; background: transparent; border: 1px solid var(--border2); border-radius: 3px; color: var(--text3); cursor: pointer; transition: all .2s; font-size: 18px; }
   .chat-upload-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
-  .chat-generate-btn { display: flex; align-items: center; gap: 8px; margin-top: 4px; background: var(--gold); border: none; border-radius: 3px; padding: 10px 16px; color: #0C0C0C; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; transition: background .2s; align-self: flex-start; }
+  .chat-generate-btn { display: flex; align-items: center; gap: 8px; margin-top: 4px; background: var(--gold); border: none; border-radius: 3px; padding: 10px 16px; color: #FFF8F0; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; transition: background .2s; align-self: flex-start; }
   .chat-generate-btn:hover { background: #D4B05E; }
   .chat-generate-btn i { font-size: 14px; }
 
@@ -118,7 +118,7 @@
   .remove-btn:hover { border-color: var(--gold-dim); color: var(--gold); }
   .upload-tag { display: inline-block; margin-top: 8px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--gold-dim); border-radius: 2px; padding: 3px 10px; }
 
-  .cta-btn { width: 100%; background: var(--gold); border: none; color: #0C0C0C; padding: 16px; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; border-radius: 2px; margin-bottom: 28px; transition: background .2s; }
+  .cta-btn { width: 100%; background: var(--gold); border: none; color: #FFF8F0; padding: 16px; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; border-radius: 2px; margin-bottom: 28px; transition: background .2s; }
   .cta-btn:hover { background: #D4B05E; }
   .cta-btn:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; }
 
@@ -143,7 +143,7 @@
   /* 圖片：全寬、等比、不裁切 */
   .drink-photo-wrap { width: 100%; background: var(--bg3); display: flex; align-items: center; justify-content: center; min-height: 140px; }
   .drink-photo { width: 100%; height: auto; display: block; object-fit: contain; max-height: 320px; }
-  .drink-photo-placeholder { width: 100%; height: 160px; background: var(--bg3); display: flex; align-items: center; justify-content: center; }
+  .drink-photo-placeholder { width: 100%; height: 160px; background: var(--bg3); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); }
   .drink-photo-placeholder i { font-size: 32px; color: var(--text3); }
 
   .drink-body { padding: 22px 24px; }
@@ -178,19 +178,19 @@
   .comments-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
   .comment-form { background: var(--bg2); border: 1px solid var(--border2); border-radius: 6px; padding: 18px 20px; margin-bottom: 20px; }
   .comment-form-title { font-size: 11px; letter-spacing: 2px; color: var(--text2); text-transform: uppercase; margin-bottom: 12px; }
-  .comment-drink-select { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; appearance: none; margin-bottom: 10px; cursor: pointer; }
+  .comment-drink-select { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; appearance: none; margin-bottom: 10px; cursor: pointer; }
   .comment-drink-select:focus { border-color: var(--gold-dim); }
   .comment-drink-select option { background: var(--bg2); }
-  .comment-nickname { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; margin-bottom: 10px; transition: border-color .2s; }
+  .comment-nickname { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; margin-bottom: 10px; transition: border-color .2s; }
   .comment-nickname:focus { border-color: var(--gold-dim); }
   .comment-nickname::placeholder { color: var(--text3); }
   .comment-stars { display: flex; gap: 6px; margin-bottom: 10px; }
   .star-btn { background: none; border: none; font-size: 26px; cursor: pointer; opacity: 0.3; transition: opacity .15s, transform .15s; line-height: 1; padding: 0 2px; }
   .star-btn.active { opacity: 1; transform: scale(1.15); }
-  .comment-text { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; resize: vertical; min-height: 80px; margin-bottom: 12px; transition: border-color .2s; }
+  .comment-text { width: 100%; background: var(--bg2); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; resize: vertical; min-height: 80px; margin-bottom: 12px; transition: border-color .2s; }
   .comment-text:focus { border-color: var(--gold-dim); }
   .comment-text::placeholder { color: var(--text3); }
-  .comment-submit { background: var(--gold); border: none; border-radius: 2px; padding: 10px 24px; color: #0C0C0C; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; transition: background .2s; }
+  .comment-submit { background: var(--gold); border: none; border-radius: 2px; padding: 10px 24px; color: #FFF8F0; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; transition: background .2s; }
   .comment-submit:hover { background: #D4B05E; }
   .comment-submit:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; }
   .comments-list { display: flex; flex-direction: column; gap: 12px; }
