@@ -802,16 +802,20 @@
       if (currentFilter === 'all') {
         q = query(collection(window._db, 'reviews'), orderBy('createdAt', 'desc'));
       } else {
-        q = query(collection(window._db, 'reviews'), where('drinkName', '==', currentFilter), orderBy('createdAt', 'desc'));
+        q = query(collection(window._db, 'reviews'), where('drinkName', '==', currentFilter));
       }
       const snap = await getDocs(q);
       if (snap.empty) {
         commentsList.innerHTML = '<div class="comments-empty">還沒有評論，成為第一個！</div>';
         return;
       }
+      // sort client-side for filtered results
+      const docs = [];
+      snap.forEach(doc => docs.push(doc.data()));
+      docs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
       commentsList.innerHTML = '';
-      snap.forEach(doc => {
-        const d = doc.data();
+      docs.forEach(d => {
         const emojiMap = ['😫','😕','😐','😊','🤩'];
         const stars = d.rating ? emojiMap[d.rating - 1] + ' ' + '★'.repeat(d.rating) + '☆'.repeat(5 - d.rating) : '';
         const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString('zh-TW') : '';
