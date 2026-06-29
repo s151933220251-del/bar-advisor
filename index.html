@@ -5,6 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Sommelier — AI 調酒顧問</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWdSqYjhu8OLoteDsqzjvQ5KnW7bTXies",
+    authDomain: "bar-advisor-6e2cc.firebaseapp.com",
+    projectId: "bar-advisor-6e2cc",
+    storageBucket: "bar-advisor-6e2cc.firebasestorage.app",
+    messagingSenderId: "9534011249",
+    appId: "1:9534011249:web:69a5d0be49f7f09d7da8d0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window._db = db;
+  window._fbModules = { collection, addDoc, getDocs, query, orderBy, where, serverTimestamp };
+  window.dispatchEvent(new Event('firebase-ready'));
+</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -154,6 +173,40 @@
   .nearby-btn i { font-size: 18px; }
   .nearby-btn.locating { color: var(--text3); cursor: wait; }
 
+  /* Comments */
+  .comments-section { margin-top: 28px; border-top: 1px solid var(--border); padding-top: 24px; display: none; }
+  .comments-label { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .comment-form { background: var(--bg2); border: 1px solid var(--border2); border-radius: 6px; padding: 18px 20px; margin-bottom: 20px; }
+  .comment-form-title { font-size: 11px; letter-spacing: 2px; color: var(--text2); text-transform: uppercase; margin-bottom: 12px; }
+  .comment-drink-select { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; appearance: none; margin-bottom: 10px; cursor: pointer; }
+  .comment-drink-select:focus { border-color: var(--gold-dim); }
+  .comment-drink-select option { background: var(--bg2); }
+  .comment-nickname { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; margin-bottom: 10px; transition: border-color .2s; }
+  .comment-nickname:focus { border-color: var(--gold-dim); }
+  .comment-nickname::placeholder { color: var(--text3); }
+  .comment-stars { display: flex; gap: 6px; margin-bottom: 10px; }
+  .star-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text3); transition: color .15s; line-height: 1; padding: 0; }
+  .star-btn.active { color: var(--gold); }
+  .comment-text { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 3px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; resize: vertical; min-height: 80px; margin-bottom: 12px; transition: border-color .2s; }
+  .comment-text:focus { border-color: var(--gold-dim); }
+  .comment-text::placeholder { color: var(--text3); }
+  .comment-submit { background: var(--gold); border: none; border-radius: 2px; padding: 10px 24px; color: #0C0C0C; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; font-family: inherit; font-weight: 700; transition: background .2s; }
+  .comment-submit:hover { background: #D4B05E; }
+  .comment-submit:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; }
+  .comments-list { display: flex; flex-direction: column; gap: 12px; }
+  .comment-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 6px; padding: 16px 18px; }
+  .comment-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .comment-drink-name { font-size: 13px; color: var(--gold); font-style: italic; }
+  .comment-meta { font-size: 11px; color: var(--text3); }
+  .comment-rating { color: var(--gold); font-size: 14px; margin-bottom: 6px; letter-spacing: 2px; }
+  .comment-nickname-display { font-size: 12px; color: var(--text2); margin-bottom: 4px; font-weight: bold; }
+  .comment-body { font-size: 14px; color: var(--text2); line-height: 1.65; }
+  .comments-empty { font-size: 13px; color: var(--text3); text-align: center; padding: 24px 0; font-style: italic; }
+  .comment-filter { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .filter-btn { background: transparent; border: 1px solid var(--border2); border-radius: 2px; padding: 5px 14px; color: var(--text2); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-family: inherit; transition: all .2s; }
+  .filter-btn:hover { border-color: var(--gold-dim); }
+  .filter-btn.active { border-color: var(--gold); color: var(--gold); background: var(--gold-glow); }
+
   .site-footer { padding: 32px 32px 0; border-top: 1px solid var(--border); margin-top: 32px; font-size: 11px; color: var(--text3); letter-spacing: 1px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 </style>
 </head>
@@ -289,6 +342,40 @@
     </div>
 
   </main>
+
+  <!-- Comments Section -->
+  <div class="comments-section" id="comments-section">
+    <div class="comments-label">
+      <i class="ti ti-message-circle" style="font-size:14px" aria-hidden="true"></i>
+      用戶評論 / Reviews
+    </div>
+
+    <!-- Leave a comment -->
+    <div class="comment-form">
+      <p class="comment-form-title">留下你的評論</p>
+      <select class="comment-drink-select" id="comment-drink-select">
+        <option value="">選擇你喝的酒...</option>
+      </select>
+      <input class="comment-nickname" id="comment-nickname" type="text" placeholder="你的暱稱（例如：Dan）" maxlength="20">
+      <div class="comment-stars" id="comment-stars">
+        <button class="star-btn" data-val="1">★</button>
+        <button class="star-btn" data-val="2">★</button>
+        <button class="star-btn" data-val="3">★</button>
+        <button class="star-btn" data-val="4">★</button>
+        <button class="star-btn" data-val="5">★</button>
+      </div>
+      <textarea class="comment-text" id="comment-text" placeholder="分享你喝這杯酒的感受..."></textarea>
+      <button class="comment-submit" id="comment-submit">送出評論</button>
+    </div>
+
+    <!-- Filter -->
+    <div class="comment-filter" id="comment-filter"></div>
+
+    <!-- Comments list -->
+    <div class="comments-list" id="comments-list">
+      <div class="comments-empty">還沒有評論，成為第一個！</div>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <span>The Sommelier &copy; 2026</span>
@@ -604,6 +691,7 @@
       }
       resultArea.style.display = 'block';
       nearbySection.style.display = 'block';
+      if (window._showComments) window._showComments(drinks);
 
     } catch (e) {
       clearInterval(timer);
@@ -614,6 +702,162 @@
       resultArea.style.display = 'block';
     }
   });
+
+  // ── Firebase Comments ──
+  let currentDrinks = [];
+  let selectedRating = 0;
+  let currentFilter = 'all';
+
+  const commentsSection = document.getElementById('comments-section');
+  const commentDrinkSelect = document.getElementById('comment-drink-select');
+  const commentNickname = document.getElementById('comment-nickname');
+  const commentText = document.getElementById('comment-text');
+  const commentSubmit = document.getElementById('comment-submit');
+  const commentsList = document.getElementById('comments-list');
+  const commentFilter = document.getElementById('comment-filter');
+  const starsContainer = document.getElementById('comment-stars');
+
+  // Star rating
+  starsContainer.querySelectorAll('.star-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedRating = parseInt(btn.dataset.val);
+      starsContainer.querySelectorAll('.star-btn').forEach((b, i) => {
+        b.classList.toggle('active', i < selectedRating);
+      });
+    });
+    btn.addEventListener('mouseover', () => {
+      const val = parseInt(btn.dataset.val);
+      starsContainer.querySelectorAll('.star-btn').forEach((b, i) => {
+        b.classList.toggle('active', i < val);
+      });
+    });
+    btn.addEventListener('mouseout', () => {
+      starsContainer.querySelectorAll('.star-btn').forEach((b, i) => {
+        b.classList.toggle('active', i < selectedRating);
+      });
+    });
+  });
+
+  function showCommentsSection(drinks) {
+    currentDrinks = drinks;
+    commentsSection.style.display = 'block';
+
+    // Populate drink select
+    commentDrinkSelect.innerHTML = '<option value="">選擇你喝的酒...</option>';
+    drinks.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.name_en;
+      opt.textContent = `${d.name_zh} (${d.name_en})`;
+      commentDrinkSelect.appendChild(opt);
+    });
+
+    // Build filter buttons
+    commentFilter.innerHTML = '';
+    const allBtn = document.createElement('button');
+    allBtn.className = 'filter-btn active';
+    allBtn.textContent = '全部';
+    allBtn.dataset.val = 'all';
+    commentFilter.appendChild(allBtn);
+    drinks.forEach(d => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = d.name_zh;
+      btn.dataset.val = d.name_en;
+      commentFilter.appendChild(btn);
+    });
+    commentFilter.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        commentFilter.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.val;
+        loadComments();
+      });
+    });
+
+    loadComments();
+  }
+
+  async function loadComments() {
+    if (!window._db) return;
+    const { collection, getDocs, query, orderBy, where } = window._fbModules;
+    commentsList.innerHTML = '<div class="comments-empty" style="color:var(--text3)">載入中...</div>';
+    try {
+      let q;
+      if (currentFilter === 'all') {
+        q = query(collection(window._db, 'reviews'), orderBy('createdAt', 'desc'));
+      } else {
+        q = query(collection(window._db, 'reviews'), where('drinkName', '==', currentFilter), orderBy('createdAt', 'desc'));
+      }
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        commentsList.innerHTML = '<div class="comments-empty">還沒有評論，成為第一個！</div>';
+        return;
+      }
+      commentsList.innerHTML = '';
+      snap.forEach(doc => {
+        const d = doc.data();
+        const stars = '★'.repeat(d.rating) + '☆'.repeat(5 - d.rating);
+        const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleDateString('zh-TW') : '';
+        const card = document.createElement('div');
+        card.className = 'comment-card';
+        card.innerHTML = `
+          <div class="comment-card-top">
+            <span class="comment-drink-name">${d.drinkZh || d.drinkName}</span>
+            <span class="comment-meta">${date}</span>
+          </div>
+          <div class="comment-rating">${stars}</div>
+          <div class="comment-nickname-display">${d.nickname || '匿名'}</div>
+          <div class="comment-body">${d.text}</div>
+        `;
+        commentsList.appendChild(card);
+      });
+    } catch (e) {
+      commentsList.innerHTML = '<div class="comments-empty">載入評論失敗，請稍後再試。</div>';
+    }
+  }
+
+  commentSubmit.addEventListener('click', async () => {
+    const drinkName = commentDrinkSelect.value;
+    const nickname = commentNickname.value.trim() || '匿名';
+    const text = commentText.value.trim();
+    if (!drinkName) { alert('請選擇你喝的酒'); return; }
+    if (!text) { alert('請輸入評論內容'); return; }
+    if (selectedRating === 0) { alert('請給這杯酒評分'); return; }
+    if (!window._db) { alert('資料庫尚未就緒，請稍後再試'); return; }
+
+    const drinkObj = currentDrinks.find(d => d.name_en === drinkName);
+    commentSubmit.disabled = true;
+    commentSubmit.textContent = '送出中...';
+
+    try {
+      const { collection, addDoc, serverTimestamp } = window._fbModules;
+      await addDoc(collection(window._db, 'reviews'), {
+        drinkName,
+        drinkZh: drinkObj ? drinkObj.name_zh : drinkName,
+        nickname,
+        rating: selectedRating,
+        text,
+        createdAt: serverTimestamp()
+      });
+      commentText.value = '';
+      commentNickname.value = '';
+      commentDrinkSelect.value = '';
+      selectedRating = 0;
+      starsContainer.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+      commentSubmit.textContent = '送出評論';
+      commentSubmit.disabled = false;
+      loadComments();
+    } catch (e) {
+      alert('送出失敗，請稍後再試');
+      commentSubmit.textContent = '送出評論';
+      commentSubmit.disabled = false;
+    }
+  });
+
+  // Hook into result rendering to show comments
+  const _origShowComments = window.showCommentsSection;
+  window._showComments = showCommentsSection;
+
 </script>
 </body>
 </html>
