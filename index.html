@@ -300,13 +300,13 @@
 
   <footer class="site-footer">
     <span>The Sommelier &copy; 2026</span>
-    <span>Powered by Claude API &nbsp;·&nbsp; Photos via Pexels</span>
+    <span>Powered by Claude API &nbsp;·&nbsp; Illustrations via Unsplash</span>
   </footer>
 </div>
 
 <script>
   const WORKER_URL = 'https://bar.s151933220251.workers.dev';
-  const PEXELS_KEY = 'iOkKXjZihhHrWPtHXBm5FpSFYFuIYlpoN7OzvQU2MiD3BOr1TJDZfulq';
+
 
   const tasteWrap = document.getElementById('taste-wrap');
   const spiritGrid = document.getElementById('spirit-grid');
@@ -464,18 +464,11 @@
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
   });
 
-  async function fetchPexelsPhoto(query) {
-    try {
-      const resp = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`, {
-        headers: { Authorization: PEXELS_KEY }
-      });
-      const data = await resp.json();
-      if (data.photos && data.photos.length > 0) {
-        const pick = data.photos[Math.floor(Math.random() * Math.min(3, data.photos.length))];
-        return { url: pick.src.large, photographer: pick.photographer, link: pick.url };
-      }
-    } catch {}
-    return null;
+  async function fetchDrinkPhoto(query) {
+    const seed = Math.floor(Math.random() * 9999);
+    const illustrationQuery = encodeURIComponent(query + ' illustration watercolor painting cute art');
+    const url = `https://source.unsplash.com/800x500/?${illustrationQuery}&sig=${seed}`;
+    return { url };
   }
 
   const loadingPhrases = [
@@ -557,7 +550,7 @@
       for (const d of drinks) {
         const card = document.createElement('div');
         card.className = 'drink-card';
-        const photoData = await fetchPexelsPhoto(d.photo_query || d.name_en + ' cocktail drink');
+        const photoData = await fetchDrinkPhoto((d.photo_query || d.name_en) + ' cocktail');
         const recipeHTML = (d.recipe || []).map(r => {
           const parts = r.split('|');
           return `<li><span>${parts[0]}</span><span class="recipe-amt">${parts[1] || ''}</span></li>`;
@@ -568,7 +561,7 @@
           : `<div class="drink-photo-placeholder"><i class="ti ti-glass-cocktail" aria-hidden="true"></i></div>`;
 
         const creditHTML = photoData
-          ? `<p class="photo-credit">Photo by <a href="${photoData.link}" target="_blank" rel="noopener">${photoData.photographer}</a> via <a href="https://pexels.com" target="_blank" rel="noopener">Pexels</a></p>`
+          ? `<p class="photo-credit">Illustration via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></p>`
           : '';
 
         card.innerHTML = `
