@@ -590,7 +590,7 @@
     const occasion = getOccasion();
     const tastes = [...tasteWrap.querySelectorAll('.taste-btn.active')].map(b => b.dataset.v).join(', ') || '';
     const spiritBtn = spiritGrid.querySelector('.spirit-btn.active');
-    const spiritLabel = spiritBtn ? spiritBtn.dataset.label : '任何種類';
+    const spiritLabel = spiritBtn ? spiritBtn.dataset.label : '請平均分配推薦，每種酒類（威士忌純飲、雞尾酒、葡萄酒、精釀啤酒）各推薦一款，不要集中在同一種';
 
     const chatContext = chatHistory.length > 0
       ? '\n\n用戶與調酒師的對話紀錄：\n' + chatHistory.map(m => (m.role === 'user' ? '用戶：' : '調酒師：') + m.content).join('\n')
