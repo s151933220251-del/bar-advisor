@@ -32,8 +32,30 @@
     --border: #D6CBBA; --border2: #C8BAA4;
     --text: #2C1F0E; --text2: #6B5540; --text3: #A08B72;
   }
-  html, body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Georgia', serif; }
-  .page { max-width: 720px; margin: 0 auto; padding: 0 0 80px; }
+  html, body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: 'Georgia', serif; transition: background 2s ease; }
+  .page { max-width: 720px; margin: 0 auto; padding: 0 0 80px; position: relative; z-index: 1; }
+
+  /* Weather backgrounds */
+  body.weather-sunny { background: linear-gradient(160deg, #FDF3E3 0%, #FAE0B0 50%, #F5C87A 100%); }
+  body.weather-cloudy { background: linear-gradient(160deg, #EAE6DF 0%, #D8D2C8 50%, #C8C0B4 100%); }
+  body.weather-rainy { background: linear-gradient(160deg, #D8E4EE 0%, #B8CCDC 50%, #98B4C8 100%); }
+  body.weather-stormy { background: linear-gradient(160deg, #C8C4D4 0%, #A8A4B8 50%, #888498 100%); }
+  body.weather-night { background: linear-gradient(160deg, #2C2840 0%, #1C1828 50%, #0C0810 100%); }
+  body.weather-night { --text: #F0EDE6; --text2: #9A9189; --text3: #5C5851; --bg: #1C1828; --bg2: #241E34; --bg3: #2C2840; --border: #38304C; --border2: #44385C; }
+
+  /* Weather canvas overlay */
+  #weather-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.6; }
+
+  /* Today's special card */
+  .daily-special { margin: 0 32px 28px; background: var(--bg2); border: 1px solid var(--gold-dim); border-radius: 8px; overflow: hidden; }
+  .daily-special-header { background: var(--gold); padding: 10px 20px; display: flex; align-items: center; gap: 8px; }
+  .daily-special-header span { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #FFF8F0; font-weight: 700; }
+  .daily-special-body { padding: 16px 20px; }
+  .daily-special-loading { padding: 20px; text-align: center; font-size: 12px; color: var(--text3); font-style: italic; }
+  .daily-drink-name { font-size: 18px; font-style: italic; color: var(--text); margin-bottom: 2px; }
+  .daily-drink-en { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; }
+  .daily-drink-reason { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 10px; }
+  .daily-weather-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gold); border: 1px solid var(--gold-dim); border-radius: 2px; padding: 3px 10px; letter-spacing: 1px; }
 
   /* Header */
   .site-header { padding: 40px 32px 28px; border-bottom: 1px solid var(--border); }
@@ -206,7 +228,21 @@
 </style>
 </head>
 <body>
+<canvas id="weather-canvas"></canvas>
 <div class="page">
+
+  <!-- Today's Special -->
+  <div class="daily-special" id="daily-special" style="display:none">
+    <div class="daily-special-header">
+      <i class="ti ti-star" style="font-size:14px;color:#FFF8F0" aria-hidden="true"></i>
+      <span>今日特調 / Today's Special</span>
+      <span id="weather-tag" style="margin-left:auto;font-size:13px"></span>
+    </div>
+    <div class="daily-special-body" id="daily-special-body">
+      <div class="daily-special-loading">根據今日天氣為你挑選...</div>
+    </div>
+  </div>
+
   <header class="site-header">
     <div class="logo-row">
       <div class="logo-ring"><i class="ti ti-glass-cocktail" style="font-size:16px" aria-hidden="true"></i></div>
@@ -681,6 +717,147 @@
       resultArea.style.display = 'block';
     }
   });
+
+  // ── Weather & Daily Special ──
+  const weatherConditions = {
+    0: { name: '晴天', cls: 'weather-sunny', emoji: '☀️', hint: '天氣晴朗，適合清爽的飲品' },
+    1: { name: '晴時多雲', cls: 'weather-sunny', emoji: '🌤️', hint: '天氣不錯，適合任何心情的酒' },
+    2: { name: '多雲', cls: 'weather-cloudy', emoji: '⛅', hint: '天色陰沉，適合濃郁有層次的酒' },
+    3: { name: '陰天', cls: 'weather-cloudy', emoji: '☁️', hint: '灰色天空，適合讓心情暖起來的酒' },
+    51: { name: '小雨', cls: 'weather-rainy', emoji: '🌦️', hint: '微雨天，適合溫暖的威士忌或熱調酒' },
+    61: { name: '雨天', cls: 'weather-rainy', emoji: '🌧️', hint: '下雨天，適合在室內喝一杯暖身的酒' },
+    71: { name: '下雪', cls: 'weather-cloudy', emoji: '❄️', hint: '天冷，適合一杯暖胃的烈酒' },
+    80: { name: '陣雨', cls: 'weather-rainy', emoji: '🌩️', hint: '陣雨不斷，適合待在吧台慢慢喝' },
+    95: { name: '雷雨', cls: 'weather-stormy', emoji: '⛈️', hint: '雷雨交加，適合一杯夠烈的酒撐過去' },
+  };
+
+  function getWeatherCondition(code) {
+    return weatherConditions[code] || weatherConditions[2];
+  }
+
+  function applyWeatherTheme(condition, isNight) {
+    document.body.className = isNight ? 'weather-night' : condition.cls;
+    document.getElementById('weather-tag').textContent = condition.emoji + ' ' + condition.name;
+  }
+
+  // Rain animation
+  function startRainAnimation() {
+    const canvas = document.getElementById('weather-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const drops = Array.from({length: 80}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      speed: 8 + Math.random() * 6,
+      length: 15 + Math.random() * 20,
+      opacity: 0.2 + Math.random() * 0.3
+    }));
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drops.forEach(d => {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(120,160,200,${d.opacity})`;
+        ctx.lineWidth = 1;
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x - 2, d.y + d.length);
+        ctx.stroke();
+        d.y += d.speed;
+        if (d.y > canvas.height) { d.y = -d.length; d.x = Math.random() * canvas.width; }
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+
+  // Stars animation for night
+  function startStarAnimation() {
+    const canvas = document.getElementById('weather-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const stars = Array.from({length: 120}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height * 0.7,
+      r: Math.random() * 1.5,
+      phase: Math.random() * Math.PI * 2
+    }));
+    function draw(t) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        const alpha = 0.4 + 0.4 * Math.sin(t * 0.001 + s.phase);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,245,220,${alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  }
+
+  async function fetchWeatherAndSpecial() {
+    document.getElementById('daily-special').style.display = 'block';
+    try {
+      // Get location
+      const pos = await new Promise((res, rej) =>
+        navigator.geolocation.getCurrentPosition(res, rej, { timeout: 6000 })
+      ).catch(() => null);
+
+      const lat = pos ? pos.coords.latitude : 25.03;
+      const lng = pos ? pos.coords.longitude : 121.56;
+      const hour = new Date().getHours();
+      const isNight = hour < 6 || hour >= 20;
+
+      // Fetch weather from Open-Meteo (free, no key)
+      const wResp = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=weathercode,temperature_2m&timezone=auto`);
+      const wData = await wResp.json();
+      const code = wData.current.weathercode;
+      const temp = Math.round(wData.current.temperature_2m);
+      const condition = getWeatherCondition(code);
+
+      applyWeatherTheme(condition, isNight);
+
+      // Animate based on weather
+      if ([51,61,80,95].includes(code)) startRainAnimation();
+      else if (isNight) startStarAnimation();
+
+      // Ask Claude for today's special
+      const dayNames = ['週日','週一','週二','週三','週四','週五','週六'];
+      const today = dayNames[new Date().getDay()];
+      const prompt = `今天是${today}，天氣：${condition.name}，氣溫 ${temp}°C，${isNight ? '現在是夜晚' : '現在是白天'}。${condition.hint}。
+請推薦一款今日特調，要求：
+- 必須是酒吧常見的經典款（雞尾酒、威士忌純飲、葡萄酒或精釀啤酒都可以）
+- 要跟今天的天氣和氣氛契合
+- 只回覆 JSON，格式：{"name_zh":"中文名","name_en":"英文名","reason":"一句話說明為什麼今天適合喝這杯，提到天氣，語氣像老朋友"}
+不要 markdown。`;
+
+      const resp = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+      });
+      const data = await resp.json();
+      let raw = data.content.filter(c => c.type === 'text').map(c => c.text).join('');
+      raw = raw.replace(/```json|```/g, '').trim();
+      const drink = JSON.parse(raw);
+
+      document.getElementById('daily-special-body').innerHTML = `
+        <div class="daily-weather-tag"><span>${condition.emoji}</span> ${condition.name} · ${temp}°C</div>
+        <div style="margin-top:12px">
+          <div class="daily-drink-name">${drink.name_zh}</div>
+          <div class="daily-drink-en">${drink.name_en}</div>
+          <div class="daily-drink-reason">${drink.reason}</div>
+        </div>
+      `;
+    } catch(e) {
+      // silent fail — just hide
+      document.getElementById('daily-special').style.display = 'none';
+    }
+  }
+
+  // Run on load
+  window.addEventListener('load', fetchWeatherAndSpecial);
 
   // ── Firebase Comments ──
   let currentDrinks = [];
